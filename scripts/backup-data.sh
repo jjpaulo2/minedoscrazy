@@ -12,7 +12,7 @@ mkdir -p "./$BACKUP_DIR";
 echo "[$(date)] Creating backup...";
 
 cp -r "./$DATA_DIR" "./$BACKUP_DIR/data-$TIMESTAMP";
-zip -r "./$BACKUP_DIR/data-$TIMESTAMP.zip" "./$BACKUP_DIR/data-$TIMESTAMP/**";
+zip -r "./$BACKUP_DIR/data-$TIMESTAMP.zip" "./$BACKUP_DIR/data-$TIMESTAMP";
 
 echo "[$(date)] Uploading backup to S3...";
 
