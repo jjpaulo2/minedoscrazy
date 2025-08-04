@@ -16,7 +16,7 @@ concurrency:
 jobs:
   start-server:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.confirmation }}
+    if: github.event.inputs.confirmation
 
     envs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
