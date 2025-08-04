@@ -1,0 +1,28 @@
+services:
+
+  minecraft:
+    image: itzg/minecraft-server:latest
+    restart: unless-stopped
+    ports:
+      - "25565:25565"
+    volumes:
+      - ./data:/data
+    environment:
+      - EULA=TRUE
+      - ONLINE_MODE=false
+      - VERSION=1.21.8
+      - TYPE=VANILLA
+      - DIFFICULTY=normal
+      - MAX_PLAYERS=20
+      - SERVER_NAME=Mine dos Crazy
+      - PVP=true
+      - MODE=survival
+      - LEVEL_TYPE=minecraft:default
+      - SPAWN_NPCS=true
+      - SPAWN_ANIMALS=true
+      - SPAWN_MONSTERS=true
+      - GENERATE_STRUCTURES=true
+      - ALLOW_NETHER=true
+      - ANNOUNCE_PLAYER_ACHIEVEMENTS=true
+      - ALLOW_FLIGHT=false
+      - ENABLE_COMMAND_BLOCK=false
