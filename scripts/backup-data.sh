@@ -13,7 +13,7 @@ echo "[$(date)] Creating backup...";
 
 cp -r "./$DATA_DIR" "./$BACKUP_DIR/data-$TIMESTAMP";
 cd "./$BACKUP_DIR/data-$TIMESTAMP";
-zip -r "../../data-$TIMESTAMP.zip" ".";
+zip -r "../data-$TIMESTAMP.zip" ".";
 cd "../..";
 
 echo "[$(date)] Uploading backup to S3...";
