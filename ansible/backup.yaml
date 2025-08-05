@@ -1,0 +1,41 @@
+---
+- name: Backup dos dados do servidor
+  become: false
+  hosts: aws
+
+  vars:
+    app_dir: minedoscrazy
+
+  vars_prompt:
+    - name: "s3_bucket"
+      prompt: "Bucket S3 onde o backup será armazenado"
+      private: yes
+
+  tasks:
+
+    - name: Gerar timestamp
+      ansible.builtin.set_fact:
+        timestamp: "{{ lookup('pipe', 'date +%Y%m%d-%H%M%S') }}"
+
+    - name: Criar backup dos dados
+      block:
+
+      - name: Criar zip do conteúdo da pasta
+        ansible.builtin.archive:
+          path: "{{ app_dir }}/data"
+          dest: "{{ app_dir }}/data-{{ timestamp }}.zip"
+          format: zip
+          remove: no
+
+      - name: Enviar backup para o S3
+        amazon.aws.aws_s3:
+          bucket: "{{ s3_bucket }}"
+          object: "data-{{ timestamp }}.zip"
+          src: "{{ app_dir }}/data-{{ timestamp }}.zip"
+          mode: put
+
+      always:
+        - name: Remover arquivo zip temporário
+          ansible.builtin.file:
+            path: "{{ app_dir }}/data-{{ timestamp }}.zip"
+            state: absent

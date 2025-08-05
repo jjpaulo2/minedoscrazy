@@ -1,12 +1,13 @@
 ---
 - name: Atualizar servidor
-  become: true
+  become: false
+  hosts: aws
+
   vars:
     app_dir: minedoscrazy
     repo_url: https://github.com/jjpaulo2/minedoscrazy.git
 
   tasks:
-
     - name: Atualizar repositório com git pull
       ansible.builtin.git:
         repo: "{{ repo_url }}"
