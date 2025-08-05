@@ -35,4 +35,4 @@ services:
       SIMULATION_DISTANCE: 4
       
       MEMORY: 10G
-      JVM_XX_OPTS: "-XX:+UseG1GC -XX:+ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
+      JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
