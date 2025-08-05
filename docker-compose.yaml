@@ -12,7 +12,8 @@ services:
       EULA: TRUE
 
       SERVER_NAME: Mine dos Crazy
-      MOTD: "Owwwwwwwww §aStoneMask§r..."
+      # MOTD: "Owwwwwwwww §aStoneMask§r..."
+      MOTD: "Owwwwwwwww §aCassandra§r..."
       ICON: https://i.scdn.co/image/ab67616d0000b27332ff042034155f8757459ddb
 
       VERSION: 1.21.8

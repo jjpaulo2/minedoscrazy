@@ -1,0 +1,19 @@
+---
+- name: Atualizar servidor
+  become: true
+  vars:
+    app_dir: minedoscrazy
+    repo_url: https://github.com/jjpaulo2/minedoscrazy.git
+
+  tasks:
+
+    - name: Atualizar repositório com git pull
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        update: yes
+
+    - name: Subir os containers com Docker Compose
+      ansible.builtin.shell: docker compose up -d
+      args:
+        chdir: "{{ app_dir }}"
