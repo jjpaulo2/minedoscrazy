@@ -1,5 +1,5 @@
-name: Ligar Servidor na AWS
-description: Este workflow liga uma instância EC2 quando acionado manualmente.
+name: Ligar Servidor
+description: Este workflow liga a máquina onde o servidor está hospedado.
 
 on:
   workflow_dispatch:
@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   start-server:
+    name: Ligar Servidor
     runs-on: ubuntu-latest
     if: github.event.inputs.confirmation
     environment: aws

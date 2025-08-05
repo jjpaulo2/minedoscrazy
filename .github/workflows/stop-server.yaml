@@ -1,5 +1,5 @@
-name: Desligar Servidor na AWS
-description: Este workflow desliga uma instância EC2 quando acionado manualmente.
+name: Desligar Servidor
+description: Este workflow desliga a máquina onde o servidor está hospedado.
 
 on:
   workflow_dispatch:
@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   stop-server:
+    name: Desligar Servidor
     runs-on: ubuntu-latest
     if: github.event.inputs.confirmation
     environment: aws
