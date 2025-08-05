@@ -6,7 +6,7 @@ on:
     inputs:
       confirmation:
         type: boolean
-        description: Tem certeza que deseja iniciar o servidor?
+        description: Tem certeza que deseja desligar o servidor?
         default: false
 
 concurrency:

@@ -7,24 +7,30 @@ services:
       - "25565:25565"
     volumes:
       - ./data:/data
+
     environment:
-      - EULA=TRUE
-      - SERVER_NAME=Mine dos Crazy
-      - MOTD="Owwwwwwwww §aStoneMask§r..."
-      - ICON=https://i.scdn.co/image/ab67616d0000b27332ff042034155f8757459ddb
-      - ONLINE_MODE=false
-      - VERSION=1.21.8
-      - TYPE=VANILLA
-      - DIFFICULTY=normal
-      - MAX_PLAYERS=20
-      - PVP=true
-      - MODE=survival
-      - LEVEL_TYPE=minecraft:default
-      - SPAWN_NPCS=true
-      - SPAWN_ANIMALS=true
-      - SPAWN_MONSTERS=true
-      - GENERATE_STRUCTURES=true
-      - ALLOW_NETHER=true
-      - ANNOUNCE_PLAYER_ACHIEVEMENTS=true
-      - ALLOW_FLIGHT=false
-      - ENABLE_COMMAND_BLOCK=false
+      EULA: TRUE
+
+      SERVER_NAME: Mine dos Crazy
+      MOTD: "Owwwwwwwww §aStoneMask§r..."
+      ICON: https://i.scdn.co/image/ab67616d0000b27332ff042034155f8757459ddb
+
+      VERSION: 1.21.8
+      ONLINE_MODE: false
+      TYPE: PAPER
+      MAX_PLAYERS: 20
+      ENABLE_COMMAND_BLOCK: false
+      DIFFICULTY: normal
+      PVP: true
+      MODE: survival
+      LEVEL_TYPE: minecraft:default
+      SPAWN_NPCS: true
+      SPAWN_ANIMALS: true
+      SPAWN_MONSTERS: true
+      GENERATE_STRUCTURES: true
+      ALLOW_NETHER: true
+      ANNOUNCE_PLAYER_ACHIEVEMENTS: true
+      ALLOW_FLIGHT: false
+      
+      MEMORY: 10G
+      JVM_XX_OPTS: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis: 50 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch"
