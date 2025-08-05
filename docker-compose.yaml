@@ -31,6 +31,8 @@ services:
       ALLOW_NETHER: true
       ANNOUNCE_PLAYER_ACHIEVEMENTS: true
       ALLOW_FLIGHT: false
+      VIEW_DISTANCE: 12
+      SIMULATION_DISTANCE: 4
       
       MEMORY: 10G
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis: 50 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch"
