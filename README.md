@@ -1,6 +1,8 @@
 # Mine dos Crazy
 
-⛏️ Configuração do servidor de Minecraft dos "Eternos Pratas" 
+[![Ligar Servidor na AWS](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/start-server.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/start-server.yaml) [![Desligar Servidor na AWS](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/stop-server.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/stop-server.yaml)
+
+⛏️ Configuração do servidor de Minecraft dos "Eternos Pratas"
 
 ### Containers
 
