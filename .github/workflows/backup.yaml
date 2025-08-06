@@ -1,0 +1,37 @@
+name: Backup do Servidor
+description: Este workflow faz backup dos dados do servidor.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        type: boolean
+        description: Tem certeza que deseja fazer backup do servidor?
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backup:
+    name: Backup do Servidor
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirmation
+    environment: aws
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v4
+        with:
+          playbook: backup.yml
+          directory: ./ansible
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [aws]
+            ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
+          options: |
+            --extra-vars s3_bucket=${{ secrets.S3_BUCKET }}
