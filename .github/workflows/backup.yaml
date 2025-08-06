@@ -27,7 +27,7 @@ jobs:
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v4
         with:
-          playbook: backup.yml
+          playbook: backup.yaml
           directory: ./ansible
           key: ${{secrets.SSH_PRIVATE_KEY}}
           inventory: |
