@@ -24,19 +24,19 @@
       - name: Criar zip do conteúdo da pasta
         ansible.builtin.archive:
           path: "{{ app_dir }}/data/world"
-          dest: "{{ app_dir }}/data-{{ timestamp }}.zip"
+          dest: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
           format: zip
           remove: no
 
       - name: Enviar backup para o S3
         amazon.aws.aws_s3:
           bucket: "{{ s3_bucket }}"
-          object: "data-{{ timestamp }}.zip"
-          src: "{{ app_dir }}/data-{{ timestamp }}.zip"
+          object: "data-{{ timestamp.stdout }}.zip"
+          src: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
           mode: put
 
       always:
         - name: Remover arquivo zip temporário
           ansible.builtin.file:
-            path: "{{ app_dir }}/data-{{ timestamp }}.zip"
+            path: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
             state: absent
