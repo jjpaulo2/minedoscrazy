@@ -1,6 +1,6 @@
 # Mine dos Crazy
 
-[![Ligar Servidor na AWS](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/ligar.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/ligar.yaml) [![Desligar Servidor na AWS](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/desligar.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/desligar.yaml)
+[![Ligar Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/ligar.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/ligar.yaml) [![Desligar Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/desligar.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/desligar.yaml) [![Backup do Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/backup.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/backup.yaml)
 
 ⛏️ Configuração do servidor de Minecraft dos "Eternos Pratas".
 
@@ -34,3 +34,4 @@ Utilizam GitHub Actions para acionar alguma automação.
 |-|-|
 | [.github/workflows/ligar.yaml](./.github/workflows/ligar.yaml) | Liga a máquina que hospeda o servidor |
 | [.github/workflows/desligar.yaml](./.github/workflows/desligar.yaml) | Desliga a máquina que hospeda o servidor |
+| [.github/workflows/backup.yaml](./.github/workflows/backup.yaml) | Executa o playbook `ansible/backup.yaml` |
