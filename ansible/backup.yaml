@@ -5,6 +5,7 @@
 
   vars:
     app_dir: minedoscrazy
+    app_timezone: America/Sao_Paulo
 
   vars_prompt:
     - name: "s3_bucket"
@@ -14,15 +15,15 @@
   tasks:
 
     - name: Gerar timestamp
-      ansible.builtin.set_fact:
-        timestamp: "{{ lookup('pipe', 'date +%Y%m%d-%H%M%S') }}"
+      ansible.builtin.shell: "TZ={{ app_timezone }} date +%Y%m%d-%H%M%S"
+      register: timestamp
 
     - name: Criar backup dos dados
       block:
 
       - name: Criar zip do conteúdo da pasta
         ansible.builtin.archive:
-          path: "{{ app_dir }}/data"
+          path: "{{ app_dir }}/data/world"
           dest: "{{ app_dir }}/data-{{ timestamp }}.zip"
           format: zip
           remove: no
