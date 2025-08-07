@@ -53,3 +53,13 @@ services:
       - './config/bluemap/core.conf:/app/config/core.conf'
       - './data/bluemap/config:/app/config'
       - './data/server/world:/app/world'
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./config/nginx/default.conf:/etc/nginx/sites-available/default.conf
+      - ./config/nginx/index.html:/var/www/html/index.html

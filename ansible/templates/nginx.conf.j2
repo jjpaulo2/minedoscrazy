@@ -3,7 +3,7 @@ server {
     server_name {{ server_url }} www.{{ server_url }};
 
     location / {
-        root /var/www/minedoscrazy;
+        root /var/www/html;
         index index.html;
     }
 }
@@ -13,7 +13,7 @@ server {
     server_name map.{{ server_url }} www.map.{{ server_url }};
 
     location / {
-        proxy_pass http://localhost:8100;
+        proxy_pass http://bluemap:8100;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

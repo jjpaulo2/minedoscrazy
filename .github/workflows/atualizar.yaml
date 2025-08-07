@@ -33,3 +33,5 @@ jobs:
           inventory: |
             [aws]
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
+          options: |
+            --extra-vars server_url=${{ secrets.SERVER_URL }}
