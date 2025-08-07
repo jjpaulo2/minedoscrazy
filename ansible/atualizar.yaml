@@ -1,6 +1,6 @@
 ---
 - name: Atualizar servidor
-  become: true
+  become: false
   hosts: aws
 
   vars:
@@ -12,22 +12,22 @@
       prompt: "URL do servidor"
       private: yes
 
-  tasks:
-    - name: Garantir que o diretório da aplicação existe
-      ansible.builtin.file:
-        path: "{{ app_dir }}"
-        state: directory
-        mode: 0755
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        recurse: true
-    
+  tasks:    
     - name: Atualizar repositório com git pull
       ansible.builtin.git:
         repo: "{{ repo_url }}"
         dest: "{{ app_dir }}"
         update: true
         force: true
+    
+    - name: Garantir que o diretório do nginx exista
+      ansible.builtin.file:
+        path: "{{ app_dir }}/config/nginx"
+        state: directory
+        mode: 0755
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        recurse: true
 
     - name: Gerando index do nginx
       ansible.builtin.template:
