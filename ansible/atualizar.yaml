@@ -1,6 +1,6 @@
 ---
 - name: Atualizar servidor
-  become: false
+  become: true
   hosts: aws
 
   vars:
@@ -8,11 +8,21 @@
     repo_url: https://github.com/jjpaulo2/minedoscrazy.git
 
   tasks:
+    - name: Garantir que o diretório da aplicação existe
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        recurse: true
+    
     - name: Atualizar repositório com git pull
       ansible.builtin.git:
         repo: "{{ repo_url }}"
         dest: "{{ app_dir }}"
-        update: yes
+        update: true
+        force: true
 
     - name: Subir os containers com Docker Compose
       ansible.builtin.shell: docker compose up -d
