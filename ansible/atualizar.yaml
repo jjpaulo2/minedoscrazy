@@ -7,43 +7,19 @@
     app_dir: minedoscrazy
     repo_url: https://github.com/jjpaulo2/minedoscrazy.git
 
-  vars_prompt:
-    - name: "server_url"
-      prompt: "URL do servidor"
-      private: yes
+  tasks:
+  
+    - name: Derrubar o Docker Compose
+      ansible.builtin.shell: docker compose down
+      args:
+        chdir: "{{ app_dir }}"
 
-  tasks:    
     - name: Atualizar repositório com git pull
       ansible.builtin.git:
         repo: "{{ repo_url }}"
         dest: "{{ app_dir }}"
         update: true
         force: true
-    
-    - name: Garantir que o diretório do nginx exista
-      ansible.builtin.file:
-        path: "{{ app_dir }}/config/nginx"
-        state: directory
-        mode: 0755
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        recurse: true
-
-    - name: Gerando index do nginx
-      ansible.builtin.template:
-        src: index.html.j2
-        dest: "{{ app_dir }}/config/nginx/index.html"
-        mode: 0644
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-
-    - name: Gerando configuração do nginx
-      ansible.builtin.template:
-        src: nginx.conf.j2
-        dest: "{{ app_dir }}/config/nginx/default.conf"
-        mode: 0644
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
 
     - name: Subir os containers com Docker Compose
       ansible.builtin.shell: docker compose up -d
