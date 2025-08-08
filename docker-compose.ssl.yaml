@@ -9,7 +9,7 @@ services:
     command: >
       certonly --standalone \
         -d minedoscrazy.the.br \
-        -m jjpaulo2@protonmail.com \
+        --email jjpaulo2@protonmail.com \
         --preferred-challenges http \
         --agree-tos \
         --non-interactive
