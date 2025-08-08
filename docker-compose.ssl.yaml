@@ -10,6 +10,6 @@ services:
       certonly --standalone \
         --preferred-challenges http \
         -d minedoscrazy.the.br \
-        -m jjpaulo2@protonmail.com \
+        --email jjpaulo2@protonmail.com \
         --agree-tos \
         --non-interactive
