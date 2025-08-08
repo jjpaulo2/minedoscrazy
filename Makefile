@@ -3,4 +3,4 @@ start:
 	@docker compose up -d
 
 certificate:
-	@docker compose -f docker-compose.ssl.yaml up -d
+	@docker compose -f docker-compose.ssl.yaml up
