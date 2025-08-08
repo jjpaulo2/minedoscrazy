@@ -23,7 +23,7 @@
 
       - name: Criar zip do conteúdo da pasta
         ansible.builtin.archive:
-          path: "{{ app_dir }}/data/world"
+          path: "{{ app_dir }}/data/server/world"
           dest: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
           format: zip
           remove: no
