@@ -1,5 +1,5 @@
 
-novo-certificado:
+certificado:
   @docker run --rm -it \
 	-v ./data/certbot/conf:/etc/letsencrypt \
 	-v ./data/certbot/www:/var/www/certbot \
