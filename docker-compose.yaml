@@ -59,7 +59,18 @@ services:
     restart: unless-stopped
     ports:
       - '80:80'
-      - '443:443'
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+  nginx-ssl:
+    image: nginx:latest
+    restart: unless-stopped
+    profiles:
+      - ssl
+    ports:
+      - '443:443'
+    depends_on:
+      - nginx
+    volumes:
+      - ./config/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf
       - ./data/letsencrypt:/etc/letsencrypt
