@@ -5,7 +5,7 @@ services:
     restart: no
     network_mode: host
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/letsencrypt:/etc/letsencrypt
     command: >
       certonly --standalone \
         -d minedoscrazy.the.br \

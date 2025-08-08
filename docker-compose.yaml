@@ -62,5 +62,4 @@ services:
       - '443:443'
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - ./data/letsencrypt:/etc/letsencrypt
