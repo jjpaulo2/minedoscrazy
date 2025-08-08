@@ -1,0 +1,15 @@
+services:
+
+  certbot:
+    image: certbot/certbot:latest
+    restart: no
+    network_mode: host
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+    command: >
+      certonly --standalone \
+        -d minedoscrazy.the.br \
+        -m jjpaulo2@protonmail.com \
+        --preferred-challenges http \
+        --agree-tos \
+        --non-interactive

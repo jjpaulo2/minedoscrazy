@@ -1,6 +1,6 @@
+start:
+	@docker compose down
+	@docker compose up -d
 
-certificado:
-	@docker run --rm -it \
-		-v ./data/certbot/conf:/etc/letsencrypt \
-		-v ./data/certbot/www:/var/www/certbot \
-		certbot/certbot:latest certonly
+certificate:
+	@docker compose -f docker-compose.ssl.yaml up -d
