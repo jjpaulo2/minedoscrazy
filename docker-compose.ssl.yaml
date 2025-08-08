@@ -8,8 +8,8 @@ services:
       - ./data/letsencrypt:/etc/letsencrypt
     command: >
       certonly --standalone \
-        -d minedoscrazy.the.br \
-        --email jjpaulo2@protonmail.com \
         --preferred-challenges http \
+        -d minedoscrazy.the.br \
+        -m jjpaulo2@protonmail.com \
         --agree-tos \
         --non-interactive
