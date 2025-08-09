@@ -5,7 +5,6 @@ services:
     restart: unless-stopped
     ports:
       - "25565:25565"
-      - "25575:25575"
     volumes:
       - ./data/server:/data
 
@@ -39,11 +38,13 @@ services:
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
 
       TYPE: FABRIC
+      MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         fabric-api
         sodium
         lithium
-        inventory-management
+        crafting-tweaks
+        inventory-sorting
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest

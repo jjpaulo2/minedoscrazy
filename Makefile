@@ -22,10 +22,10 @@ stop-machine:
 stop-containers:
 	@docker compose --profile ssl down --remove-orphans
 
-containers: update stop-containers
+containers: stop-containers update
 	@docker compose up -d
 
-containers-ssl: update stop-containers
+containers-ssl: stop-containers update
 	@docker compose --profile ssl up -d
 
 certificate: update
