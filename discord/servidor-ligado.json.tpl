@@ -13,7 +13,12 @@
           "name": "Endereço",
           "value": "minedoscrazy.the.br"
         }
-      ]
+      ],
+      "author": {
+        "name": "${GITHUB_USERNAME}",
+        "url": "https://github.com/${GITHUB_USERNAME}",
+        "icon_url": "https://github.com/${GITHUB_USERNAME}.png"
+      }
     }
   ]
 }

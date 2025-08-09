@@ -21,6 +21,7 @@ jobs:
     environment: aws
 
     env:
+      GITHUB_USERNAME: ${{ github.actor }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       DISCORD_NOTIFICATION: backup-realizado
 

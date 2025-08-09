@@ -21,6 +21,7 @@ jobs:
     environment: aws
 
     env:
+      GITHUB_USERNAME: ${{ github.actor }}
       AWS_INSTANCE_ID: ${{ secrets.AWS_INSTANCE_ID }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       DISCORD_NOTIFICATION: servidor-desligado

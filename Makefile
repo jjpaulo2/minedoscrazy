@@ -1,3 +1,7 @@
+GITHUB_USERNAME ?= octocat
+DISCORD_NOTIFICATION ?= teste
+DISCORD_NOTIFICATION_BODY := $(shell GITHUB_USERNAME=$(GITHUB_USERNAME) envsubst < discord/$(DISCORD_NOTIFICATION).json.tpl)
+
 update:
 	@git pull origin main
 
@@ -22,4 +26,4 @@ certificate: update
 notify-discord:
 	@curl -X POST $(DISCORD_WEBHOOK_URL) \
 		-H "Content-Type: application/json" \
-		-d '$(shell cat discord/$(DISCORD_NOTIFICATION).json)'
+		-d '$(DISCORD_NOTIFICATION_BODY)'

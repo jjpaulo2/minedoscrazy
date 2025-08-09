@@ -9,7 +9,12 @@
           "name": "Repositório",
           "value": "[jjpaulo2/minedoscrazy](https://github.com/jjpaulo2/minedoscrazy)"
         }
-      ]
+      ],
+      "author": {
+        "name": "${GITHUB_USERNAME}",
+        "url": "https://github.com/${GITHUB_USERNAME}",
+        "icon_url": "https://github.com/${GITHUB_USERNAME}.png"
+      }
     }
   ]
 }
