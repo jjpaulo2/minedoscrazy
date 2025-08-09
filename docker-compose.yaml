@@ -43,6 +43,7 @@ services:
         fabric-api
         sodium
         lithium
+        inventory-management
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
