@@ -47,16 +47,50 @@ services:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
     restart: unless-stopped
     command: -r -u -w
+    depends_on:
+      - minecraft
     ports:
       - '8100:8100'
     volumes:
       - './config/bluemap/core.conf:/app/config/core.conf'
       - './data/bluemap/config:/app/config'
+      - './data/bluemap/web:/app/web'
+      - './data/bluemap/data:/app/data'
       - './data/server/world:/app/world'
+  
+  mc-monitor:
+    image: itzg/mc-monitor:latest
+    restart: unless-stopped
+    command: export-for-prometheus --servers minecraft:25565 --port 8080
+    depends_on:
+      - minecraft
+    ports:
+      - "8080:8080"
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    depends_on:
+      - mc-monitor
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
 
   nginx:
     image: nginx:latest
     restart: unless-stopped
+    depends_on:
+      - bluemap
+      - grafana
     ports:
       - '80:80'
     volumes:
@@ -65,12 +99,12 @@ services:
   nginx-ssl:
     image: nginx:latest
     restart: unless-stopped
+    depends_on:
+      - nginx
     profiles:
       - ssl
     ports:
       - '443:443'
-    depends_on:
-      - nginx
     volumes:
       - ./config/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf
       - ./data/letsencrypt:/etc/letsencrypt
