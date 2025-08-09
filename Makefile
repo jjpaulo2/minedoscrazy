@@ -7,12 +7,13 @@ start-machine:
 stop-machine:
 	@aws ec2 stop-instances --instance-ids $(AWS_INSTANCE_ID)
 
-containers: update
-	@docker compose down --remove-orphans
+stop-containers:
+	@docker compose --profile ssl down --remove-orphans
+
+containers: update stop-containers
 	@docker compose up -d
 
-containers-ssl: update
-	@docker compose --profile ssl down --remove-orphans
+containers-ssl: update stop-containers
 	@docker compose --profile ssl up -d
 
 certificate: update

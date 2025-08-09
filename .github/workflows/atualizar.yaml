@@ -20,6 +20,10 @@ jobs:
     if: github.event.inputs.confirmation
     environment: aws
 
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      DISCORD_NOTIFICATION: servidor-atualizado
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -33,3 +37,6 @@ jobs:
           inventory: |
             [aws]
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
+
+      - name: Send Discord Notification
+        run: make notify-discord

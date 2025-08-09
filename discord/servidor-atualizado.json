@@ -1,0 +1,15 @@
+{
+  "embeds": [
+    {
+      "title": "Servidor atualizado!",
+      "description": "O servidor acabou de ser atualizado com as últimas configurações do repositório.",
+      "color": 15548997,
+      "fields": [
+        {
+          "name": "Repositório",
+          "value": "[jjpaulo2/minedoscrazy](https://github.com/jjpaulo2/minedoscrazy)"
+        }
+      ]
+    }
+  ]
+}

@@ -10,7 +10,7 @@
   tasks:
   
     - name: Derrubar o Docker Compose
-      ansible.builtin.shell: docker compose down
+      ansible.builtin.shell: make stop-containers
       args:
         chdir: "{{ app_dir }}"
 
@@ -22,6 +22,6 @@
         force: true
 
     - name: Subir os containers com Docker Compose
-      ansible.builtin.shell: docker compose up -d
+      ansible.builtin.shell: make containers-ssl
       args:
         chdir: "{{ app_dir }}"

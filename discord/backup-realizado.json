@@ -1,0 +1,9 @@
+{
+  "embeds": [
+    {
+      "title": "Backup realizado com sucesso!",
+      "description": "A última versão do mundo foi salva com sucesso. Pode ficar tranquilo!",
+      "color": 5763719
+    }
+  ]
+}
