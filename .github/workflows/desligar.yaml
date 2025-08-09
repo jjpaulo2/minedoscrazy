@@ -20,6 +20,11 @@ jobs:
     if: github.event.inputs.confirmation
     environment: aws
 
+    env:
+      AWS_INSTANCE_ID: ${{ secrets.AWS_INSTANCE_ID }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      DISCORD_NOTIFICATION: servidor-desligado
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -32,5 +37,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Stop EC2 Instance
-        run: |
-          aws ec2 stop-instances --instance-ids ${{ secrets.AWS_INSTANCE_ID }}
+        run: make stop-machine
+
+      - name: Send Discord Notification
+        run: make notify-discord

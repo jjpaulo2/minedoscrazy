@@ -1,0 +1,9 @@
+{
+  "embeds": [
+    {
+      "title": "Servidor desligado!",
+      "description": "Agora não é mais possível se conectar ao servidor.",
+      "color": 15548997
+    }
+  ]
+}
