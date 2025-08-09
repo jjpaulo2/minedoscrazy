@@ -1,6 +1,14 @@
+ANSIBLE_DIR ?= ansible
 GITHUB_USERNAME ?= octocat
+BACKUP_FILENAME ?= $(shell touch .backup_filename && cat .backup_filename)
 DISCORD_NOTIFICATION ?= teste
-DISCORD_NOTIFICATION_BODY := $(shell GITHUB_USERNAME=$(GITHUB_USERNAME) envsubst < discord/$(DISCORD_NOTIFICATION).json.tpl)
+
+DISCORD_NOTIFICATION_BODY := $(shell \
+	S3_BUCKET=$(S3_BUCKET) \
+	AWS_REGION=$(AWS_REGION) \
+	BACKUP_FILENAME=$(BACKUP_FILENAME) \
+	GITHUB_USERNAME=$(GITHUB_USERNAME) \
+	envsubst < discord/$(DISCORD_NOTIFICATION).json.tpl)
 
 update:
 	@git pull origin main

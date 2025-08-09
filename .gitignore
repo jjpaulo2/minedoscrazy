@@ -29,3 +29,4 @@ data/
 .bucket
 inventory.ini
 .env
+.backup_filename

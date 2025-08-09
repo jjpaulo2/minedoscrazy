@@ -34,6 +34,10 @@
           object: "data-{{ timestamp.stdout }}.zip"
           src: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
           mode: put
+      
+      - name: Salvar o nome do arquivo de backup
+        ansible.builtin.shell: "echo 'data-{{ timestamp.stdout }}.zip' > ../.backup_filename"
+        delegate_to: localhost
 
       always:
         - name: Remover arquivo zip temporário
