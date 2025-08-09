@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     ports:
       - "25565:25565"
+      - "25575:25575"
     volumes:
       - ./data/server:/data
 
@@ -52,38 +53,49 @@ services:
     ports:
       - '8100:8100'
     volumes:
-      - './config/bluemap/core.conf:/app/config/core.conf'
+      - './config/bluemap/core.conf:/app/config/core.conf:ro'
       - './data/bluemap/config:/app/config'
       - './data/bluemap/web:/app/web'
       - './data/bluemap/data:/app/data'
       - './data/server/world:/app/world'
   
-  mc-monitor:
-    image: itzg/mc-monitor:latest
+  loki:
+    image: grafana/loki:latest
     restart: unless-stopped
-    command: export-for-prometheus --servers minecraft:25565 --port 8080
+    user: root
     depends_on:
       - minecraft
+      - bluemap
     ports:
-      - "8080:8080"
+      - "3100:3100"
+    volumes:
+      - ./config/loki/config.yaml:/etc/loki/config.yaml:ro
+      - ./data/loki:/loki
 
-  prometheus:
-    image: prom/prometheus:latest
+  promtail:
+    image: grafana/promtail:latest
     restart: unless-stopped
     depends_on:
-      - mc-monitor
+      - loki
+    command: -config.file=/etc/promtail/config.yaml
     volumes:
-      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
-    ports:
-      - "9090:9090"
-
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - ./config/promtail/config.yaml:/etc/promtail/config.yaml:ro
+    
   grafana:
     image: grafana/grafana:latest
     restart: unless-stopped
     depends_on:
-      - prometheus
+      - loki
     ports:
       - "3000:3000"
+    volumes:
+      - ./config/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+    environment:
+      GF_SERVER_ROOT_URL: "https://minedoscrazy.the.br/monitoring/"
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
 
   nginx:
     image: nginx:latest
@@ -94,7 +106,7 @@ services:
     ports:
       - '80:80'
     volumes:
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
   nginx-ssl:
     image: nginx:latest
@@ -106,5 +118,5 @@ services:
     ports:
       - '443:443'
     volumes:
-      - ./config/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf:ro
       - ./data/letsencrypt:/etc/letsencrypt

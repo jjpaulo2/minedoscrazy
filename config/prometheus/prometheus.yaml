@@ -1,6 +1,0 @@
-global:
-  scrape_interval: 30s
-scrape_configs:
-  - job_name: "minecraft"
-    static_configs:
-      - targets: ["mc-monitor:8080"]
