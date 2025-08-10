@@ -41,10 +41,9 @@ services:
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         fabric-api
-        sodium
         lithium
-        crafting-tweaks
-        inventory-sorting
+        cloth-config
+        balm
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
