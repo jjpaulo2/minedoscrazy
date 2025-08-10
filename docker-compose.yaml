@@ -44,6 +44,7 @@ services:
         lithium
         cloth-config
         balm
+        inventory-management
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
@@ -94,6 +95,7 @@ services:
       - "3000:3000"
     volumes:
       - ./config/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ./data/grafana:/var/lib/grafana
     environment:
       GF_SERVER_ROOT_URL: "https://minedoscrazy.the.br/monitoring/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
