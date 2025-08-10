@@ -2,7 +2,7 @@
   "embeds": [
     {
       "title": "Servidor ligado!",
-      "description": "Acesse [minedoscrazy.the.br](https://minedoscrazy.the.br/) para ver o mapa do mundo.",
+      "description": "Acesse [minedoscrazy.the.br/map](https://minedoscrazy.the.br/map/) para ver o mapa do mundo.",
       "color": 5763719,
       "fields": [
         {
