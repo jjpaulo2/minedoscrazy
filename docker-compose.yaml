@@ -7,6 +7,7 @@ services:
       - minecraft
     ports:
       - "25565:25565"
+      - "8804:8804"
     volumes:
       - ./data/server:/data
     environment:
@@ -43,7 +44,8 @@ services:
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
 
       TYPE: FABRIC
-      FABRIC_FORCE_REINSTALL: true
+      FABRIC_FORCE_REINSTALL: false
+      MODRINTH_ALLOWED_VERSION_TYPE: beta
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         fabric-api
@@ -51,6 +53,7 @@ services:
         cloth-config
         balm
         inventory-management
+        geyser
 
   rcon:
     image: itzg/rcon:latest
