@@ -6,9 +6,10 @@ services:
     profiles:
       - minecraft
     ports:
-      - "25565:25565"
-      - "8804:8804"
+      - "25565:25565" # Java Edition
+      - "19132:19132" # Bedrock Edition
     volumes:
+      - ./config/plan/config.yml:/data/config/plan/config.yml
       - ./data/server:/data
     environment:
       EULA: TRUE
@@ -89,7 +90,6 @@ services:
   
   portainer:
     image: portainer/portainer-ce:latest
-    container_name: portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
