@@ -6,19 +6,19 @@ clean:
 .PHONY: templates
 templates:
 	@mkdir -p data/nginx
-	@envsubst < templates/nginx/nginx.conf > data/nginx/nginx.conf
-	@envsubst < templates/nginx/nginx.ssl.conf > data/nginx/nginx.ssl.conf
+	@envsubst '${DOMAIN_NAME}' < templates/nginx/nginx.conf > data/nginx/nginx.conf
+	@envsubst '${DOMAIN_NAME}' < templates/nginx/nginx.ssl.conf > data/nginx/nginx.ssl.conf
 
-down-server:
+stop-server:
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile "*" down
 
-certificate: down-server clean
+certificate: stop-server clean
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile new-ssl-certificate up
 
-serve: down-server clean templates
+serve: stop-server clean templates
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl down
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl up -d
 
-serve-ssl: down-server clean templates
+serve-ssl: stop-server clean templates
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile ssl down
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile ssl up -d

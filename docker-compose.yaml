@@ -34,11 +34,16 @@ services:
       VIEW_DISTANCE: 12
       SIMULATION_DISTANCE: 4
 
+      ENABLE_RCON: true
+      RCON_PORT: 25575
+      RCON_PASSWORD: "minedoscrazy"
+
       MEMORY: 8G
       MAX_MEMORY: 12G
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
 
       TYPE: FABRIC
+      FABRIC_FORCE_REINSTALL: true
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         fabric-api
@@ -46,6 +51,23 @@ services:
         cloth-config
         balm
         inventory-management
+
+  rcon:
+    image: itzg/rcon:latest
+    restart: unless-stopped
+    profiles:
+      - minecraft
+    depends_on:
+      - minecraft
+    ports:
+      - "4326:4326"
+      - "4327:4327"
+    environment:
+      RWA_USERNAME: ${RCON_ADMIN_USERNAME:-admin}
+      RWA_PASSWORD: ${RCON_ADMIN_PASSWORD:-admin}
+      RWA_ADMIN: "TRUE"
+      RWA_RCON_HOST: minecraft
+      RWA_RCON_PASSWORD: "minedoscrazy"
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
