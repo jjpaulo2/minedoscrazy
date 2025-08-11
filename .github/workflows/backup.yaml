@@ -23,7 +23,6 @@ jobs:
     env:
       GITHUB_USERNAME: ${{ github.actor }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      DISCORD_NOTIFICATION: backup-realizado
       S3_BUCKET: ${{ secrets.S3_BUCKET }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
 
@@ -44,4 +43,4 @@ jobs:
             --extra-vars s3_bucket=${{ secrets.S3_BUCKET }}
 
       - name: Send Discord Notification
-        run: make notify-discord
+        run: nodejs discord/webhooks/backup-realizado.js

@@ -24,7 +24,6 @@ jobs:
       GITHUB_USERNAME: ${{ github.actor }}
       AWS_INSTANCE_ID: ${{ secrets.AWS_INSTANCE_ID }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      DISCORD_NOTIFICATION: servidor-desligado
 
     steps:
       - name: Checkout repository
@@ -41,4 +40,4 @@ jobs:
         run: make stop-machine
 
       - name: Send Discord Notification
-        run: make notify-discord
+        run: nodejs discord/webhooks/servidor-desligado.js

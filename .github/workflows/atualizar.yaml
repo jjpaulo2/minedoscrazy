@@ -23,7 +23,6 @@ jobs:
     env:
       GITHUB_USERNAME: ${{ github.actor }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      DISCORD_NOTIFICATION: servidor-atualizado
 
     steps:
       - name: Checkout repository
@@ -40,4 +39,4 @@ jobs:
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
 
       - name: Send Discord Notification
-        run: make notify-discord
+        run: nodejs discord/webhooks/servidor-atualizado.js
