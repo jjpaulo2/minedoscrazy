@@ -9,44 +9,8 @@ services:
       - "25565:25565"
     volumes:
       - ./data/server:/data
-
-    environment:
-      EULA: TRUE
-
-      SERVER_NAME: Mine dos Crazy
-      MOTD: "Owwwwwwwww §aStoneMask§r..."
-      ICON: https://i.scdn.co/image/ab67616d0000b27332ff042034155f8757459ddb
-
-      VERSION: 1.21.8
-      ONLINE_MODE: false
-      MAX_PLAYERS: 12
-      ENABLE_COMMAND_BLOCK: false
-      DIFFICULTY: normal
-      PVP: true
-      MODE: survival
-      LEVEL_TYPE: minecraft:default
-      SPAWN_NPCS: true
-      SPAWN_ANIMALS: true
-      SPAWN_MONSTERS: true
-      GENERATE_STRUCTURES: true
-      ALLOW_NETHER: true
-      ANNOUNCE_PLAYER_ACHIEVEMENTS: true
-      ALLOW_FLIGHT: false
-      VIEW_DISTANCE: 12
-      SIMULATION_DISTANCE: 4
-
-      MEMORY: 8G
-      MAX_MEMORY: 12G
-      JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
-
-      TYPE: FABRIC
-      MODRINTH_DOWNLOAD_DEPENDENCIES: required
-      MODRINTH_PROJECTS: |
-        fabric-api
-        lithium
-        cloth-config
-        balm
-        inventory-management
+    env_file:
+      - minecraft.env
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
@@ -65,64 +29,32 @@ services:
       - './data/bluemap/data:/app/data'
       - './data/server/world:/app/world'
   
-  loki:
-    image: grafana/loki:latest
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
     restart: unless-stopped
-    user: root
-    profiles:
-      - minecraft
-    depends_on:
-      - minecraft
-      - bluemap
-    ports:
-      - "3100:3100"
+    security_opt:
+      - no-new-privileges:true
     volumes:
-      - ./config/loki/config.yaml:/etc/loki/config.yaml:ro
-      - ./data/loki:/loki
-
-  promtail:
-    image: grafana/promtail:latest
-    restart: unless-stopped
-    profiles:
-      - minecraft
-    depends_on:
-      - loki
-    command: -config.file=/etc/promtail/config.yaml
-    volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/machine-id:/etc/machine-id:ro
-      - ./config/promtail/config.yaml:/etc/promtail/config.yaml:ro
-    
-  grafana:
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    profiles:
-      - minecraft
-    user: root
-    depends_on:
-      - loki
+      - ./data/portainer:/data
     ports:
-      - "3000:3000"
-    volumes:
-      - ./config/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
-      - ./data/grafana:/var/lib/grafana
-    environment:
-      GF_SERVER_ROOT_URL: "https://minedoscrazy.the.br/monitoring/"
-      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      - 9000:9000
 
   nginx:
     image: nginx:latest
     restart: unless-stopped
     profiles:
-      - minecraft
+      - no-ssl
     depends_on:
       - bluemap
-      - grafana
+      - portainer
     ports:
       - '80:80'
     volumes:
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx:/etc/nginx/conf.d/:ro
+      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
   nginx-ssl:
     image: nginx:latest
@@ -132,9 +64,11 @@ services:
     profiles:
       - ssl
     ports:
+      - '80:80'
       - '443:443'
     volumes:
-      - ./config/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx:/etc/nginx/conf.d/:ro
+      - ./data/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf:ro
       - ./data/letsencrypt:/etc/letsencrypt
 
   new-ssl-certificate:
