@@ -1,37 +1,24 @@
-ANSIBLE_DIR ?= ansible
-GITHUB_USERNAME ?= octocat
-BACKUP_FILENAME ?= $(shell touch .backup_filename && cat .backup_filename)
-DISCORD_NOTIFICATION ?= teste
+DOCKER_COMPOSE_FILE = docker-compose.yaml
 
-DISCORD_NOTIFICATION_BODY := $(shell \
-	S3_BUCKET=$(S3_BUCKET) \
-	AWS_REGION=$(AWS_REGION) \
-	BACKUP_FILENAME=$(BACKUP_FILENAME) \
-	GITHUB_USERNAME=$(GITHUB_USERNAME) \
-	envsubst < discord/$(DISCORD_NOTIFICATION).json.tpl)
+clean:
+	@docker system prune -f
 
-update:
-	@git pull origin main
+.PHONY: templates
+templates:
+	@mkdir -p data/nginx
+	@envsubst < templates/nginx/nginx.conf > data/nginx/nginx.conf
+	@envsubst < templates/nginx/nginx.ssl.conf > data/nginx/nginx.ssl.conf
 
-start-machine:
-	@aws ec2 start-instances --instance-ids $(AWS_INSTANCE_ID)
+down-server:
+	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile "*" down
 
-stop-machine:
-	@aws ec2 stop-instances --instance-ids $(AWS_INSTANCE_ID)
+certificate: down-server clean
+	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile new-ssl-certificate up
 
-stop-containers:
-	@docker compose --profile ssl down --remove-orphans
+serve: down-server clean templates
+	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl down
+	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl up -d
 
-containers: stop-containers update
-	@docker compose up -d
-
-containers-ssl: stop-containers update
-	@docker compose --profile ssl up -d
-
-certificate: update
-	@docker compose -f docker-compose.certbot.yaml up
-
-notify-discord:
-	@curl -X POST $(DISCORD_WEBHOOK_URL) \
-		-H "Content-Type: application/json" \
-		-d '$(DISCORD_NOTIFICATION_BODY)'
+serve-ssl: down-server clean templates
+	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile ssl down
+	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile ssl up -d
