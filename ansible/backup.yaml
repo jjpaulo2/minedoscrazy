@@ -1,6 +1,6 @@
 ---
 - name: Backup dos dados do servidor
-  become: true
+  become: false
   hosts: minedoscrazy
 
   vars:
@@ -22,6 +22,7 @@
       block:
 
       - name: Criar zip do conteúdo da pasta
+        become: true
         ansible.builtin.archive:
           path: "{{ app_dir }}/data/server/world"
           dest: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
