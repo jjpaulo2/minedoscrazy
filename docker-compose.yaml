@@ -91,6 +91,8 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     restart: unless-stopped
+    profiles:
+      - minecraft
     security_opt:
       - no-new-privileges:true
     volumes:
