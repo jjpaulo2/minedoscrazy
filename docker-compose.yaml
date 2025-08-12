@@ -9,7 +9,6 @@ services:
       - "25565:25565" # Java Edition
       - "19132:19132" # Bedrock Edition
     volumes:
-      - ./config/plan/config.yml:/data/config/plan/config.yml
       - ./data/server:/data
     environment:
       EULA: TRUE
@@ -111,8 +110,9 @@ services:
     ports:
       - '80:80'
     volumes:
-      - ./config/nginx:/etc/nginx/conf.d/:ro
       - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/conf:/etc/nginx/conf.d/:ro
+      - ./config/nginx/www:/var/www/html
 
   nginx-ssl:
     image: nginx:latest
@@ -136,14 +136,16 @@ services:
     profiles:
       - new-ssl-certificate
     volumes:
+      - ./config/nginx/www:/var/www/html
       - ./data/letsencrypt:/etc/letsencrypt
       - ./logs/letsencrypt:/var/log/letsencrypt
     command: >
-      certonly --standalone
+      certonly
         --preferred-challenges http
         -d ${DOMAIN_NAME}
         --http-01-address 0.0.0.0
         --email ${DOMAIN_ADMIN_EMAIL}
+        --webroot-path /var/www/html
         --agree-tos
         --non-interactive
         --verbose
