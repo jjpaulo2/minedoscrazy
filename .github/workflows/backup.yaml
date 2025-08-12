@@ -37,7 +37,7 @@ jobs:
           directory: ./ansible
           key: ${{secrets.SSH_PRIVATE_KEY}}
           inventory: |
-            [aws]
+            [minedoscrazy]
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
           options: |
             --extra-vars s3_bucket=${{ secrets.S3_BUCKET }}

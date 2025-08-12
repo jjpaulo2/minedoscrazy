@@ -1,7 +1,7 @@
 ---
 - name: Atualizar servidor
   become: false
-  hosts: aws
+  hosts: minedoscrazy
 
   vars:
     app_dir: minedoscrazy
@@ -10,7 +10,7 @@
   tasks:
   
     - name: Derrubar o Docker Compose
-      ansible.builtin.shell: make stop-containers
+      ansible.builtin.shell: make stop-server
       args:
         chdir: "{{ app_dir }}"
 
@@ -22,6 +22,6 @@
         force: true
 
     - name: Subir os containers com Docker Compose
-      ansible.builtin.shell: make containers-ssl
+      ansible.builtin.shell: make serve-ssl
       args:
         chdir: "{{ app_dir }}"

@@ -1,7 +1,7 @@
 ---
 - name: Backup dos dados do servidor
-  become: false
-  hosts: aws
+  become: true
+  hosts: minedoscrazy
 
   vars:
     app_dir: minedoscrazy

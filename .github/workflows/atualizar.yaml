@@ -35,7 +35,7 @@ jobs:
           directory: ./ansible
           key: ${{secrets.SSH_PRIVATE_KEY}}
           inventory: |
-            [aws]
+            [minedoscrazy]
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
 
       - name: Send Discord Notification
