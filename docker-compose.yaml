@@ -137,6 +137,7 @@ services:
       - new-ssl-certificate
     volumes:
       - ./data/letsencrypt:/etc/letsencrypt
+      - ./logs/letsencrypt:/var/log/letsencrypt
     command: >
       certonly --standalone
         --preferred-challenges http
