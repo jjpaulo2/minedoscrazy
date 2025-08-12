@@ -6,8 +6,7 @@ services:
     profiles:
       - minecraft
     ports:
-      - "25565:25565" # Java Edition
-      - "19132:19132" # Bedrock Edition
+      - "25565:25565"
     volumes:
       - ./data/server:/data
     environment:
@@ -53,7 +52,6 @@ services:
         cloth-config
         balm
         inventory-management
-        geyser
 
   rcon:
     image: itzg/rcon:latest
