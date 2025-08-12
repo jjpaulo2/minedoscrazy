@@ -7,8 +7,20 @@
     app_dir: minedoscrazy
     repo_url: https://github.com/jjpaulo2/minedoscrazy.git
 
+  vars_prompt:
+    - name: "domain_name"
+      prompt: "Nome do domínio do servidor"
+      private: yes
+
+    - name: "rcon_admin_username"
+      prompt: "Nome de usuário do administrador RCON"
+      private: yes
+
+    - name: "rcon_admin_password"
+      prompt: "Senha do administrador RCON"
+      private: yes
+
   tasks:
-  
     - name: Derrubar o Docker Compose
       ansible.builtin.shell: make stop-server
       args:
@@ -25,3 +37,7 @@
       ansible.builtin.shell: make serve-ssl
       args:
         chdir: "{{ app_dir }}"
+      environment:
+        DOMAIN_NAME: "{{ domain_name }}"
+        RCON_ADMIN_USERNAME: "{{ rcon_admin_username }}"
+        RCON_ADMIN_PASSWORD: "{{ rcon_admin_password }}"

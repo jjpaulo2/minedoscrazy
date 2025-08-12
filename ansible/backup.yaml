@@ -13,7 +13,6 @@
       private: yes
 
   tasks:
-
     - name: Gerar timestamp
       ansible.builtin.shell: "TZ={{ app_timezone }} date +%Y%m%d-%H%M%S"
       register: timestamp
