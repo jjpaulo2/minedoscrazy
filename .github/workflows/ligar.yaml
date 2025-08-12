@@ -21,23 +21,39 @@ jobs:
     environment: minedoscrazy
 
     env:
-      GITHUB_USERNAME: ${{ github.actor }}
-      AWS_INSTANCE_ID: ${{ secrets.AWS_INSTANCE_ID }}
+      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+
+    steps:
+      - name: Start machine on OCI
+        uses: oracle-actions/run-oci-cli-command@v1.3.2
+        with:
+          command: compute instance action --instance-id ${{ secrets.OCI_COMPUTE_ID }} --action START
+          query: 'data.{ "lifecycle-state": "lifecycle-state" }'
+
+  discord:
+    name: Enviar Notificação no Discord
+    runs-on: ubuntu-latest
+    if: success() && github.event.inputs.confirmation
+    environment: minedoscrazy
+    needs: start-server
+
+    env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      GITHUB_USERNAME: ${{ github.actor }}
+      DOMAIN_NAME: ${{ secrets.SERVER_ADDRESS }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Start EC2 Instance
-        run: make start-machine
+          node-version: 'lts/*'
 
       - name: Send Discord Notification
         run: node discord/webhooks/servidor-ligado.js
