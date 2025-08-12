@@ -41,7 +41,9 @@ jobs:
       
       - name: Get backup filename
         id: get_filename
-        run: echo "filename=$(cat .backup_filename)" >> $GITHUB_ENV
+        run: |
+          cat .backup_filename
+          echo "filename=$(cat .backup_filename)" >> $GITHUB_ENV
 
   discord:
     name: Enviar Notificação no Discord
