@@ -118,15 +118,17 @@ services:
     image: nginx:latest
     restart: unless-stopped
     depends_on:
-      - nginx
+      - bluemap
+      - portainer
     profiles:
       - ssl
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - ./config/nginx:/etc/nginx/conf.d/:ro
       - ./data/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/conf:/etc/nginx/conf.d/:ro
+      - ./config/nginx/www:/var/www/html:ro
       - ./data/letsencrypt:/etc/letsencrypt
 
   new-ssl-certificate:
