@@ -69,6 +69,8 @@ services:
       RWA_ADMIN: "TRUE"
       RWA_RCON_HOST: minecraft
       RWA_RCON_PASSWORD: "minedoscrazy"
+      RWA_WEBSOCKET_URL_SSL: "wss://${DOMAIN_NAME}:4327"
+      RWA_WEBSOCKET_URL: "ws://${DOMAIN_NAME}:4326"
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
