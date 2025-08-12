@@ -144,3 +144,4 @@ services:
         --email ${DOMAIN_ADMIN_EMAIL}
         --agree-tos
         --non-interactive
+        --verbose
