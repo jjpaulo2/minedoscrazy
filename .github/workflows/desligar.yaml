@@ -33,6 +33,7 @@ jobs:
         with:
           command: compute instance action --instance-id ${{ secrets.OCI_COMPUTE_ID }} --action SOFTSTOP
           query: 'data.{"lifecycle-state":"lifecycle-state"}'
+          silent: false
 
   discord:
     name: Enviar Notificação no Discord
