@@ -60,17 +60,14 @@ services:
       - minecraft
     depends_on:
       - minecraft
-    ports:
-      - "4326:4326"
-      - "4327:4327"
     environment:
       RWA_USERNAME: ${RCON_ADMIN_USERNAME:-admin}
       RWA_PASSWORD: ${RCON_ADMIN_PASSWORD:-admin}
       RWA_ADMIN: "TRUE"
       RWA_RCON_HOST: minecraft
       RWA_RCON_PASSWORD: "minedoscrazy"
-      RWA_WEBSOCKET_URL_SSL: "wss://${DOMAIN_NAME}:4327"
-      RWA_WEBSOCKET_URL: "ws://${DOMAIN_NAME}:4327"
+      RWA_WEBSOCKET_URL_SSL: "wss://${DOMAIN_NAME}/rcon-ws/"
+      RWA_WEBSOCKET_URL: "ws://${DOMAIN_NAME}/rcon-ws/"
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
