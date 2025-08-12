@@ -140,7 +140,7 @@ services:
       - ./data/letsencrypt:/etc/letsencrypt
       - ./logs/letsencrypt:/var/log/letsencrypt
     command: >
-      certonly
+      certonly --webroot
         --preferred-challenges http
         -d ${DOMAIN_NAME}
         --http-01-address 0.0.0.0
