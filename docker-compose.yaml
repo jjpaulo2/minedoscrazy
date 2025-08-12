@@ -141,6 +141,7 @@ services:
       certonly --standalone
         --preferred-challenges http
         -d ${DOMAIN_NAME}
+        --http-01-address 0.0.0.0
         --email ${DOMAIN_ADMIN_EMAIL}
         --agree-tos
         --non-interactive
