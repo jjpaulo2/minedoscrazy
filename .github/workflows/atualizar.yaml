@@ -39,4 +39,4 @@ jobs:
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
 
       - name: Send Discord Notification
-        run: nodejs discord/webhooks/servidor-atualizado.js
+        run: node discord/webhooks/servidor-atualizado.js

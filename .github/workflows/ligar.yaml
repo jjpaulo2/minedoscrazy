@@ -40,4 +40,4 @@ jobs:
         run: make start-machine
 
       - name: Send Discord Notification
-        run: nodejs discord/webhooks/servidor-ligado.js
+        run: node discord/webhooks/servidor-ligado.js

@@ -43,4 +43,4 @@ jobs:
             --extra-vars s3_bucket=${{ secrets.S3_BUCKET }}
 
       - name: Send Discord Notification
-        run: nodejs discord/webhooks/backup-realizado.js
+        run: node discord/webhooks/backup-realizado.js
