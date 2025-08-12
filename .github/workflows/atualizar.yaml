@@ -38,5 +38,28 @@ jobs:
             [minedoscrazy]
             ${{ secrets.SERVER_ADDRESS }} ansible_user=${{ secrets.SERVER_USER }}
 
+  discord:
+    name: Enviar Notificação no Discord
+    runs-on: ubuntu-latest
+    if: success() && github.event.inputs.confirmation
+    environment: minedoscrazy
+    needs: update
+
+    env:
+      BACKUP_FILENAME: ${{ needs.update.outputs.backup_filename }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      GITHUB_USERNAME: ${{ github.actor }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
       - name: Send Discord Notification
         run: node discord/webhooks/servidor-atualizado.js
