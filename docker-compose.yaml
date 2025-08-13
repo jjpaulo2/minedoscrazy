@@ -279,7 +279,6 @@ services:
   new-ssl-certificate:
     image: certbot/certbot:latest
     restart: no
-    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - new-ssl-certificate
     volumes:
