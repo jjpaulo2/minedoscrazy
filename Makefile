@@ -19,13 +19,15 @@ directories:
 	@mkdir -p data/grafana
 	@mkdir -p data/letsencrypt
 	@mkdir -p data/nginx
-	@sudo chown -R $(UID):$(GID) data/
-	@sudo chown -R $(UID):$(GID) config/
 
 .PHONY: files
 files: directories
 	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.conf > data/nginx/nginx.conf
 	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.ssl.conf > data/nginx/nginx.ssl.conf
+
+permissions: files
+	@sudo chown -R $(UID):$(GID) data/
+	@sudo chown -R $(UID):$(GID) config/
 
 stop-server:
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile "*" down
