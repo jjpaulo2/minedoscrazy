@@ -109,7 +109,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/portainer:/data
 
-  minecraft-prometheus-exporter:
+  minecraft-exporter:
     image: ghcr.io/dirien/minecraft-exporter:latest
     restart: unless-stopped
     profiles:
@@ -117,8 +117,6 @@ services:
     depends_on:
       minecraft:
         condition: service_healthy
-    ports:
-      - "9150:9150"
     volumes:
       - ./data/minecraft/world:/minecraft/world
     environment:
@@ -126,8 +124,13 @@ services:
       MC_RCON_ADDRESS: minecraft:25575
       MC_RCON_PASSWORD: minedoscrazy
       MC_NAME_SOURCE: offline
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9150/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   
-  node-prometheus-exporter:
+  node-exporter:
     image: prom/node-exporter:latest
     restart: unless-stopped
     profiles:
@@ -141,6 +144,43 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9100/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  
+  loki:
+    image: grafana/loki:latest
+    restart: unless-stopped
+    profiles:
+      - minecraft
+    command: -config.file=/etc/loki/config/config.yml
+    volumes:
+      - ./config/loki/config.yaml:/etc/loki/config/config.yml:ro
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:3100/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  promtail:
+    image: grafana/promtail:latest
+    restart: unless-stopped
+    profiles:
+      - minecraft
+    volumes:
+      - ./config/promtail/config.yaml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      loki:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:9080/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   prometheus:
     image: prom/prometheus:latest
@@ -148,14 +188,22 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
-    ports:
-      - "9090:9090"
+    depends_on:
+      node-exporter:
+        condition: service_healthy
+      minecraft-exporter:
+        condition: service_healthy
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.retention.time=7d"
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
       - ./data/prometheus:/prometheus
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:9090/-/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   grafana:
     image: grafana/grafana:latest
@@ -163,12 +211,20 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
-    depends_on: 
-      - prometheus
-    ports:
-      - "3000:3000"
+    depends_on:
+      prometheus:
+        condition: service_healthy
     volumes:
+      - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yml:ro
       - ./data/grafana:/var/lib/grafana
+    environment:
+      GF_SERVE_FROM_SUB_PATH: true
+      GF_SERVER_ROOT_URL: http://${DOMAIN_NAME}/monitoring/
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://grafana:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:latest
@@ -176,9 +232,13 @@ services:
     profiles:
       - no-ssl
     depends_on:
+      rcon:
+        condition: service_started
       bluemap:
         condition: service_started
       portainer:
+        condition: service_started
+      grafana:
         condition: service_started
     ports:
       - '80:80'
@@ -196,9 +256,13 @@ services:
     image: nginx:latest
     restart: unless-stopped
     depends_on:
+      rcon:
+        condition: service_started
       bluemap:
         condition: service_started
       portainer:
+        condition: service_started
+      grafana:
         condition: service_started
     profiles:
       - ssl
