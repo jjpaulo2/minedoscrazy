@@ -82,7 +82,6 @@ services:
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
     restart: unless-stopped
-    user: "${UID:-1000}:${GID:-1000}"
     command: -r -u -w
     profiles:
       - minecraft
