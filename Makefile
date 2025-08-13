@@ -13,6 +13,7 @@ directories:
 	@mkdir -p data/rcon
 	@mkdir -p data/bluemap
 	@mkdir -p data/portainer
+	@chown -R $(UID):$(GID) data/portainer
 	@mkdir -p data/prometheus
 	@chown -R $(UID):$(GID) data/prometheus
 	@mkdir -p data/grafana
