@@ -20,6 +20,7 @@ directories:
 	@mkdir -p data/letsencrypt
 	@mkdir -p data/nginx
 	@sudo chown -R $(UID):$(GID) data/
+	@sudo chown -R $(UID):$(GID) config/
 
 .PHONY: files
 files: directories
