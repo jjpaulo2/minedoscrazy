@@ -3,12 +3,13 @@ services:
   minecraft:
     image: itzg/minecraft-server:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
     ports:
       - "25565:25565"
     volumes:
-      - ./data/server:/data
+      - ./data/minecraft:/data
     environment:
       EULA: TRUE
 
@@ -89,7 +90,7 @@ services:
       - ./data/bluemap/config:/app/config
       - ./data/bluemap/web:/app/web
       - ./data/bluemap/data:/app/data
-      - ./data/server/world:/app/world
+      - ./data/minecraft/world:/app/world
     healthcheck:
       test: ["CMD", "curl", "-fs", "http://bluemap:8100/"]
       interval: 30s
@@ -107,6 +108,67 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/portainer:/data
+
+  minecraft-prometheus-exporter:
+    image: ghcr.io/dirien/minecraft-exporter:latest
+    restart: unless-stopped
+    profiles:
+      - minecraft
+    depends_on:
+      minecraft:
+        condition: service_healthy
+    ports:
+      - "9150:9150"
+    volumes:
+      - ./data/minecraft/world:/minecraft/world
+    environment:
+      WEB_DISABLED_EXPORTER_METRICS: true
+      MC_RCON_ADDRESS: minecraft:25575
+      MC_RCON_PASSWORD: minedoscrazy
+      MC_NAME_SOURCE: offline
+  
+  node-prometheus-exporter:
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    profiles:
+      - minecraft
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
+    profiles:
+      - minecraft
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=7d"
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+      - ./data/prometheus:/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
+    profiles:
+      - minecraft
+    depends_on: 
+      - prometheus
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
 
   nginx:
     image: nginx:latest

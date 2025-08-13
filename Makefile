@@ -3,9 +3,18 @@ DOCKER_COMPOSE_FILE = docker-compose.yaml
 clean:
 	@docker system prune -f
 
-.PHONY: files
-files:
+.PHONY: directories
+directories:
+	@mkdir -p data/minecraft
+	@mkdir -p data/bluemap
+	@mkdir -p data/portainer
+	@mkdir -p data/prometheus
+	@mkdir -p data/grafana
+	@mkdir -p data/letsencrypt
 	@mkdir -p data/nginx
+
+.PHONY: files
+files: directories
 	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.conf > data/nginx/nginx.conf
 	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.ssl.conf > data/nginx/nginx.ssl.conf
 
