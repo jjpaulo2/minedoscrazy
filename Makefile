@@ -22,10 +22,8 @@ directories:
 
 .PHONY: files
 files: directories
-	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.conf > data/nginx/nginx.conf
-	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.ssl.conf > data/nginx/nginx.ssl.conf
-
-permissions: files
+	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.conf | sudo tee data/nginx/nginx.conf > /dev/null
+	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.ssl.conf | sudo tee data/nginx/nginx.ssl.conf > /dev/null
 	@sudo chown -R $(UID):$(GID) data/
 	@sudo chown -R $(UID):$(GID) config/
 
