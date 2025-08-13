@@ -34,7 +34,7 @@ serve: stop-server clean files
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl down
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl up -d
 
-certificate: serve
+certificate:
 	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile new-ssl-certificate up
 
 serve-ssl: stop-server clean files
