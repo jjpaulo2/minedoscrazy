@@ -57,6 +57,7 @@ services:
   rcon:
     image: itzg/rcon:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
     depends_on:
@@ -81,6 +82,7 @@ services:
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     command: -r -u -w
     profiles:
       - minecraft
@@ -115,6 +117,7 @@ services:
   minecraft-exporter:
     image: ghcr.io/dirien/minecraft-exporter:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
     depends_on:
@@ -131,6 +134,7 @@ services:
   node-exporter:
     image: prom/node-exporter:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
     volumes:
@@ -147,6 +151,7 @@ services:
   loki:
     image: grafana/loki:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
     command: -config.file=/etc/loki/config/config.yml
@@ -161,6 +166,7 @@ services:
   promtail:
     image: grafana/promtail:latest
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - minecraft
     volumes:
@@ -216,8 +222,9 @@ services:
       retries: 5
 
   nginx:
-    image: nginx:latest
+    image: nginxinc/nginx-unprivileged:alpine
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - no-ssl
     depends_on:
@@ -242,8 +249,9 @@ services:
       retries: 3
 
   nginx-ssl:
-    image: nginx:latest
+    image: nginxinc/nginx-unprivileged:alpine
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     depends_on:
       rcon:
         condition: service_started
@@ -272,6 +280,7 @@ services:
   new-ssl-certificate:
     image: certbot/certbot:latest
     restart: no
+    user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - new-ssl-certificate
     volumes:

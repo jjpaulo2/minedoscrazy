@@ -9,16 +9,14 @@ clean:
 .PHONY: directories
 directories:
 	@mkdir -p data/minecraft
-	@sudo chown -R $(UID):$(GID) data/minecraft
 	@mkdir -p data/rcon
 	@mkdir -p data/bluemap
 	@mkdir -p data/portainer
-	@sudo chown -R $(UID):$(GID) data/portainer
 	@mkdir -p data/prometheus
-	@sudo chown -R $(UID):$(GID) data/prometheus
 	@mkdir -p data/grafana
 	@mkdir -p data/letsencrypt
 	@mkdir -p data/nginx
+	@sudo chown -R $(UID):$(GID) data/
 
 .PHONY: files
 files: directories
