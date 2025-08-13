@@ -166,7 +166,7 @@ services:
   promtail:
     image: grafana/promtail:latest
     restart: unless-stopped
-    user: "${UID:-1000}:${GID:-1000}"
+    user: root
     profiles:
       - minecraft
     volumes:
