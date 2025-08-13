@@ -226,7 +226,6 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
       - no-ssl
-      - new-ssl-certificate
     depends_on:
       rcon:
         condition: service_started
