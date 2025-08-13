@@ -6,6 +6,7 @@ clean:
 .PHONY: directories
 directories:
 	@mkdir -p data/minecraft
+	@mkdir -p data/rcon
 	@mkdir -p data/bluemap
 	@mkdir -p data/portainer
 	@mkdir -p data/prometheus

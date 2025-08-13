@@ -62,6 +62,8 @@ services:
     depends_on:
       minecraft:
         condition: service_healthy
+    volumes:
+      - ./data/rcon:/opt/rcon-web-admin/db
     environment:
       RWA_USERNAME: ${RCON_ADMIN_USERNAME:-admin}
       RWA_PASSWORD: ${RCON_ADMIN_PASSWORD:-admin}
@@ -124,11 +126,6 @@ services:
       MC_RCON_ADDRESS: minecraft:25575
       MC_RCON_PASSWORD: minedoscrazy
       MC_NAME_SOURCE: offline
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:9150/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
   
   node-exporter:
     image: prom/node-exporter:latest
@@ -138,17 +135,13 @@ services:
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
+      - /run/udev:/run/udev:ro
       - /:/rootfs:ro
     command:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:9100/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
   
   loki:
     image: grafana/loki:latest
@@ -190,9 +183,9 @@ services:
       - minecraft
     depends_on:
       node-exporter:
-        condition: service_healthy
+        condition: service_started
       minecraft-exporter:
-        condition: service_healthy
+        condition: service_started
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.retention.time=7d"
