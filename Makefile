@@ -1,6 +1,9 @@
 GID ?= 1000
 UID ?= 1000
 
+DOMAIN_NAME ?= localhost
+DOMAIN_ADMIN_EMAIL ?= admin@localhost
+
 DOCKER_COMPOSE_FILE = docker-compose.yaml
 
 clean:
