@@ -104,6 +104,7 @@ services:
     image: portainer/portainer-ce:latest
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
+    command: --base-url /admin
     profiles:
       - minecraft
     security_opt:
