@@ -59,14 +59,14 @@ services:
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - minecraft
+      - minecraft-admin
     depends_on:
       minecraft:
         condition: service_healthy
     volumes:
       - ./data/rcon:/opt/rcon-web-admin/db
     environment:
-      RWA_USERNAME: ${RCON_ADMIN_USERNAME:-admin}
+      RWA_USERNAME: ${RCON_ADMIN_USER:-admin}
       RWA_PASSWORD: ${RCON_ADMIN_PASSWORD:-admin}
       RWA_ADMIN: "TRUE"
       RWA_RCON_HOST: minecraft
@@ -84,7 +84,7 @@ services:
     restart: unless-stopped
     command: -r -u -w
     profiles:
-      - minecraft
+      - web
     depends_on:
       minecraft:
         condition: service_healthy
@@ -99,13 +99,15 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    labels:
+      - traefik.enable=false
   
   portainer:
     image: portainer/portainer-ce:latest
     restart: unless-stopped
     command: --base-url /admin
     profiles:
-      - minecraft
+      - docker-admin
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -118,7 +120,7 @@ services:
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - minecraft
+      - monitoring
     depends_on:
       minecraft:
         condition: service_healthy
@@ -135,7 +137,7 @@ services:
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - minecraft
+      - monitoring
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -147,12 +149,25 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
   
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
+    privileged: true
+    profiles:
+      - monitoring
+    volumes: 
+      - "/:/rootfs"
+      - "/var/run:/var/run"
+      - "/sys:/sys"
+      - "/var/lib/docker/:/var/lib/docker"
+      - "/dev/disk/:/dev/disk"
+
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:2.9.15
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - minecraft
+      - monitoring
     command: -config.file=/etc/loki/config/config.yml
     volumes:
       - ./config/loki/config.yaml:/etc/loki/config/config.yml:ro
@@ -162,26 +177,12 @@ services:
       timeout: 5s
       retries: 3
 
-  promtail:
-    image: grafana/promtail:latest
-    restart: unless-stopped
-    user: root
-    profiles:
-      - minecraft
-    volumes:
-      - ./config/promtail/config.yaml:/etc/promtail/config.yml:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    command: -config.file=/etc/promtail/config.yml
-    depends_on:
-      loki:
-        condition: service_healthy
-
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v3.5.0
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - minecraft
+      - monitoring
     depends_on:
       node-exporter:
         condition: service_started
@@ -199,12 +200,33 @@ services:
       timeout: 5s
       retries: 3
 
+  alloy:
+    image: grafana/alloy:v1.10.1
+    restart: unless-stopped
+    command: run /etc/alloy/ --storage.path=/var/lib/alloy/data
+    profiles:
+      - monitoring
+    depends_on:
+      loki:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
+    volumes:
+      - ./config/alloy:/etc/alloy:ro
+      - ./data/alloy:/var/lib/alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://alloy:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:12.1.1
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - minecraft
+      - monitoring
     depends_on:
       prometheus:
         condition: service_healthy
@@ -220,78 +242,24 @@ services:
       timeout: 5s
       retries: 5
 
-  nginx:
-    image: nginx:latest
+  traefik:
+    image: traefik:v3.5
     restart: unless-stopped
-    user: "${UID:-1000}:${GID:-1000}"
     profiles:
-      - no-ssl
-    depends_on:
-      rcon:
-        condition: service_started
-      bluemap:
-        condition: service_started
-      portainer:
-        condition: service_started
-      grafana:
-        condition: service_started
+      - web
     ports:
-      - '80:80'
+      - "80:80"
+      - "8080:8080"
     volumes:
-      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./config/nginx/conf:/etc/nginx/conf.d/:ro
-      - ./config/nginx/www:/var/www/html
-    healthcheck:
-      test: ["CMD", "curl", "-fs", "http://nginx/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
+      - ./config/traefik/traefik.yaml:/etc/traefik/traefik.yml:ro
+      - ./config/traefik/dynamic-config.yaml:/etc/traefik/dynamic-config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
 
-  nginx-ssl:
-    image: nginx:latest
+  sablier:
+    image: sablierapp/sablier:1.10.1
     restart: unless-stopped
-    user: "${UID:-1000}:${GID:-1000}"
-    depends_on:
-      rcon:
-        condition: service_started
-      bluemap:
-        condition: service_started
-      portainer:
-        condition: service_started
-      grafana:
-        condition: service_started
+    command: start --provider.name=docker
     profiles:
-      - ssl
-    ports:
-      - '80:80'
-      - '443:443'
+      - web
     volumes:
-      - ./data/nginx/nginx.ssl.conf:/etc/nginx/nginx.conf:ro
-      - ./config/nginx/conf:/etc/nginx/conf.d/:ro
-      - ./config/nginx/www:/var/www/html:ro
-      - ./data/letsencrypt:/etc/letsencrypt
-    healthcheck:
-      test: ["CMD", "curl", "-kf", "https://nginx-ssl/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-
-  new-ssl-certificate:
-    image: certbot/certbot:latest
-    restart: no
-    profiles:
-      - new-ssl-certificate
-    volumes:
-      - ./config/nginx/www:/var/www/html
-      - ./data/letsencrypt:/etc/letsencrypt
-      - ./logs/letsencrypt:/var/log/letsencrypt
-    command: >
-      certonly --webroot
-        --preferred-challenges http
-        -d ${DOMAIN_NAME}
-        --http-01-address 0.0.0.0
-        --email ${DOMAIN_ADMIN_EMAIL}
-        --webroot-path /var/www/html
-        --agree-tos
-        --non-interactive
-        --verbose
+      - /var/run/docker.sock:/var/run/docker.sock

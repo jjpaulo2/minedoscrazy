@@ -1,0 +1,118 @@
+http:
+  services:
+    portainer:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://portainer:9000"
+
+    bluemap:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://bluemap:8100"
+
+    grafana:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://grafana:3000"
+
+    rcon:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://rcon:4326"
+
+    rcon-ws:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://rcon:4327"
+
+  middlewares:
+    bluemap-dynamic:
+      plugin:
+        sablier:
+          sablierUrl: http://sablier:10000
+          sessionDuration: 1m
+          names: minedoscrazy-bluemap-1
+          dynamic:
+            displayName: Bluemap
+            refreshFrequency: 15s
+            showDetails: true
+            theme: ghost
+
+    grafana-dynamic:
+      plugin:
+        sablier:
+          sablierUrl: http://sablier:10000
+          sessionDuration: 1m
+          names: minedoscrazy-grafana-1
+          dynamic:
+            displayName: Grafana
+            refreshFrequency: 15s
+            showDetails: true
+            theme: ghost
+
+    portainer-dynamic:
+      plugin:
+        sablier:
+          sablierUrl: http://sablier:10000
+          sessionDuration: 1m
+          names: minedoscrazy-portainer-1
+          dynamic:
+            displayName: Portainer
+            refreshFrequency: 15s
+            showDetails: true
+            theme: ghost
+    
+    rcon-dynamic:
+      plugin:
+        sablier:
+          sablierUrl: http://sablier:10000
+          sessionDuration: 1m
+          names: minedoscrazy-rcon-1
+          dynamic:
+            displayName: RCON
+            refreshFrequency: 15s
+            showDetails: true
+            theme: ghost
+    
+    route-strip:
+      stripPrefix:
+        forceSlash: true
+        prefixes:
+          - "/map"
+          - "/rcon"
+
+  routers:
+    map:
+      rule: PathPrefix(`/map`)
+      entryPoints: ["web", "websecure"]
+      middlewares: ["bluemap-dynamic@file", "route-strip@file"]
+      service: "bluemap"
+    
+    admin:
+      rule: PathPrefix(`/admin`)
+      entryPoints: ["web", "websecure"]
+      middlewares: ["portainer-dynamic@file"]
+      service: "portainer"
+
+    monitoring:
+      rule: PathPrefix(`/monitoring`)
+      entryPoints: ["web", "websecure"]
+      middlewares: ["grafana-dynamic@file"]
+      service: "grafana"
+
+    rcon:
+      rule: PathPrefix(`/rcon`)
+      entryPoints: ["web", "websecure"]
+      middlewares: ["rcon-dynamic@file", "route-strip@file"]
+      service: "rcon"
+
+    rcon-ws:
+      rule: PathPrefix(`/rcon-ws`)
+      entryPoints: ["web", "websecure"]
+      middlewares: ["rcon-dynamic@file", "route-strip@file"]
+      service: "rcon"

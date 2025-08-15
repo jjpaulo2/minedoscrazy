@@ -1,0 +1,20 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker: {}
+  file:
+    filename: /etc/traefik/dynamic-config.yml
+
+experimental:
+  plugins:
+    sablier:
+      moduleName: "github.com/sablierapp/sablier"
+      version: "v1.10.1"
+
+logs:
+  general:
+    level: DEBUG
