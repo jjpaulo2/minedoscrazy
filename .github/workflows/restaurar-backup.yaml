@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  backup:
-    name: Backup do Servidor
+  backup-restore:
+    name: Restaurar Backup do Servidor
     runs-on: ubuntu-latest
     if: github.event.inputs.confirmation
     environment: minedoscrazy
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     if: success() && github.event.inputs.confirmation
     environment: minedoscrazy
-    needs: backup
+    needs: backup-restore
 
     env:
       BACKUP_FILENAME: ${{ github.event.inputs.file }}
