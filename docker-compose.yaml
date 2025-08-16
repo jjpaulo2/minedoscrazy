@@ -215,11 +215,6 @@ services:
       - ./config/alloy:/etc/alloy:ro
       - ./data/alloy:/var/lib/alloy
       - /var/run/docker.sock:/var/run/docker.sock
-    healthcheck:
-      test: ["CMD", "curl", "-fs", "http://alloy:8080/health"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
 
   grafana:
     image: grafana/grafana:12.1.1

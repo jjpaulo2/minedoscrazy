@@ -74,7 +74,7 @@ http:
           sessionDuration: 1m
           names: minedoscrazy-rcon-1
           dynamic:
-            displayName: RCON
+            displayName: RCON Web Admin
             refreshFrequency: 15s
             showDetails: true
             theme: ghost
@@ -85,6 +85,9 @@ http:
         prefixes:
           - "/map"
           - "/rcon"
+          - "/rcon-ws"
+          - "/admin"
+          - "/monitoring"
 
   routers:
     map:
@@ -96,13 +99,13 @@ http:
     admin:
       rule: PathPrefix(`/admin`)
       entryPoints: ["web", "websecure"]
-      middlewares: ["portainer-dynamic@file"]
+      middlewares: ["portainer-dynamic@file", "route-strip@file"]
       service: "portainer"
 
     monitoring:
       rule: PathPrefix(`/monitoring`)
       entryPoints: ["web", "websecure"]
-      middlewares: ["grafana-dynamic@file"]
+      middlewares: ["grafana-dynamic@file", "route-strip@file"]
       service: "grafana"
 
     rcon:
@@ -115,4 +118,4 @@ http:
       rule: PathPrefix(`/rcon-ws`)
       entryPoints: ["web", "websecure"]
       middlewares: ["rcon-dynamic@file", "route-strip@file"]
-      service: "rcon"
+      service: "rcon-ws"
