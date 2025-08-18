@@ -22,21 +22,11 @@ directories:
 
 .PHONY: files
 files: directories
-	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.conf | sudo tee data/nginx/nginx.conf > /dev/null
-	@envsubst '$${DOMAIN_NAME}' < templates/nginx/nginx.ssl.conf | sudo tee data/nginx/nginx.ssl.conf > /dev/null
 	@sudo chown -R $(UID):$(GID) data/
 	@sudo chown -R $(UID):$(GID) config/
 
 stop-server:
-	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile "*" down
+	@docker compose --profile '*' down
 
-serve: stop-server clean files
-	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl down
-	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile no-ssl up -d
-
-certificate:
-	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile new-ssl-certificate up
-
-serve-ssl: stop-server clean files
-	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile ssl down
-	@docker compose -f $(DOCKER_COMPOSE_FILE) --profile minecraft --profile ssl up -d
+serve: clean files
+	@docker compose --profile '*' up -d --force-recreate
