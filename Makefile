@@ -29,4 +29,4 @@ stop-server:
 	@docker compose --profile '*' down
 
 serve: clean files
-	@docker compose --profile '*' up -d --force-recreate
+	@docker compose --profile '*' up -d --force-recreate --remove-orphans
