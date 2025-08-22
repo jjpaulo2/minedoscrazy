@@ -278,18 +278,34 @@ services:
     profiles:
       - web
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
+    command:
+      - --api.dashboard=false
+      - --api.insecure=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.metrics.address=:8082
+      - --providers.docker=true
+      - --providers.file.filename=/etc/traefik/dynamic-config.yml
+      - --experimental.plugins.sablier.moduleName=github.com/sablierapp/sablier
+      - --experimental.plugins.sablier.version=v1.10.1
+      - --metrics.prometheus.entryPoint=metrics
+      - --metrics.prometheus.addEntryPointsLabels=true
+      - --metrics.prometheus.addServicesLabels=true
+      - --certificatesresolvers.letsencrypt.acme.email=${DOMAIN_ADMIN_EMAIL:-admin@localhost}
+      - --certificatesresolvers.letsencrypt.acme.storage=acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --log.level=DEBUG
     labels:
       traefik.enable: false
       sablier.enable: false
     volumes:
-      - ./config/traefik/traefik.yaml:/etc/traefik/traefik.yml:ro
       - ./config/traefik/dynamic-config.yaml:/etc/traefik/dynamic-config.yml:ro
+      - ./config/traefik/acme.json:/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME:-localhost}
-      DOMAIN_ADMIN_EMAIL: ${DOMAIN_ADMIN_EMAIL:-admin@localhost}
 
   sablier:
     image: sablierapp/sablier:1.10.1
