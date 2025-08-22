@@ -17,14 +17,11 @@ directories:
 	@mkdir -p data/portainer
 	@mkdir -p data/prometheus
 	@mkdir -p data/grafana
-	@mkdir -p data/traefik/
 
 .PHONY: files
 files: directories
-	@sudo touch data/traefik/acme.json
 	@sudo chown -R $(UID):$(GID) data/
 	@sudo chown -R $(UID):$(GID) config/
-	@sudo chmod 600 data/traefik/acme.json
 
 stop-server:
 	@docker compose --profile '*' down
