@@ -294,7 +294,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.email=${DOMAIN_ADMIN_EMAIL:-admin@localhost}
       - --certificatesresolvers.letsencrypt.acme.storage=acme.json
       - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
-      - --log.level=INFO
+      - --log.level=DEBUG
       - --providers.docker=true
       - --providers.file.filename=/etc/traefik/dynamic-config.yml
     labels:
