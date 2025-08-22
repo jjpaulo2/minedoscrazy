@@ -5,40 +5,30 @@ http:
         passHostHeader: true
         servers:
           - url: "http://portainer:9000"
-        tls:
-          certResolver: letsencrypt
 
     bluemap:
       loadBalancer:
         passHostHeader: true
         servers:
           - url: "http://bluemap:8100"
-        tls:
-          certResolver: letsencrypt
 
     grafana:
       loadBalancer:
         passHostHeader: true
         servers:
           - url: "http://grafana:3000"
-        tls:
-          certResolver: letsencrypt
 
     rcon:
       loadBalancer:
         passHostHeader: true
         servers:
           - url: "http://rcon:4326"
-        tls:
-          certResolver: letsencrypt
 
     rcon-ws:
       loadBalancer:
         passHostHeader: true
         servers:
           - url: "http://rcon:4327"
-        tls:
-          certResolver: letsencrypt
 
   middlewares:
     bluemap-dynamic:
@@ -101,27 +91,37 @@ http:
       entryPoints: ["web", "websecure"]
       middlewares: ["bluemap-dynamic@file"]
       service: "bluemap"
+      tls:
+        certResolver: letsencrypt
     
     admin:
       rule: Host(`admin.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
       middlewares: ["portainer-dynamic@file"]
       service: "portainer"
+      tls:
+        certResolver: letsencrypt
 
     monitoring:
       rule: Host(`monitoring.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
       middlewares: ["grafana-dynamic@file"]
       service: "grafana"
+      tls:
+        certResolver: letsencrypt
 
     rcon:
       rule: Host(`rcon.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
       middlewares: ["rcon-dynamic@file"]
       service: "rcon"
+      tls:
+        certResolver: letsencrypt
 
     rcon-ws:
       rule: Host(`rcon.{{ env "DOMAIN_NAME" }}`) && PathPrefix(`/ws/`)
       entryPoints: ["web", "websecure"]
       middlewares: ["rcon-dynamic@file", "route-strip@file"]
       service: "rcon-ws"
+      tls:
+        certResolver: letsencrypt
