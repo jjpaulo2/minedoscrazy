@@ -17,8 +17,6 @@ directories:
 	@mkdir -p data/portainer
 	@mkdir -p data/prometheus
 	@mkdir -p data/grafana
-	@mkdir -p data/letsencrypt
-	@mkdir -p data/nginx
 
 .PHONY: files
 files: directories

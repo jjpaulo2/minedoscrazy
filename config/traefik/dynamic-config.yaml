@@ -83,39 +83,35 @@ http:
       stripPrefix:
         forceSlash: true
         prefixes:
-          - "/map"
-          - "/rcon"
-          - "/rcon-ws"
-          - "/admin"
-          - "/monitoring"
+          - "/ws/"
 
   routers:
     map:
-      rule: PathPrefix(`/map`)
+      rule: Host(`map.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
-      middlewares: ["bluemap-dynamic@file", "route-strip@file"]
+      middlewares: ["bluemap-dynamic@file"]
       service: "bluemap"
     
     admin:
-      rule: PathPrefix(`/admin`)
+      rule: Host(`admin.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
-      middlewares: ["portainer-dynamic@file", "route-strip@file"]
+      middlewares: ["portainer-dynamic@file"]
       service: "portainer"
 
     monitoring:
-      rule: PathPrefix(`/monitoring`)
+      rule: Host(`monitoring.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
-      middlewares: ["grafana-dynamic@file", "route-strip@file"]
+      middlewares: ["grafana-dynamic@file"]
       service: "grafana"
 
     rcon:
-      rule: PathPrefix(`/rcon`)
+      rule: Host(`rcon.{{ env "DOMAIN_NAME" }}`)
       entryPoints: ["web", "websecure"]
-      middlewares: ["rcon-dynamic@file", "route-strip@file"]
+      middlewares: ["rcon-dynamic@file"]
       service: "rcon"
 
     rcon-ws:
-      rule: PathPrefix(`/rcon-ws`)
+      rule: Host(`rcon.{{ env "DOMAIN_NAME" }}`) && PathPrefix(`/ws/`)
       entryPoints: ["web", "websecure"]
       middlewares: ["rcon-dynamic@file", "route-strip@file"]
       service: "rcon-ws"

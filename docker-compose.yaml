@@ -8,6 +8,9 @@ services:
       - minecraft
     ports:
       - "25565:25565"
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     volumes:
       - ./data/minecraft:/data
     environment:
@@ -63,6 +66,10 @@ services:
     depends_on:
       minecraft:
         condition: service_healthy
+    labels:
+      sablier.enable: true
+      sablier.timeout: 60s
+      sablier.mode: stop
     volumes:
       - ./data/rcon:/opt/rcon-web-admin/db
     environment:
@@ -71,8 +78,8 @@ services:
       RWA_ADMIN: "TRUE"
       RWA_RCON_HOST: minecraft
       RWA_RCON_PASSWORD: "minedoscrazy"
-      RWA_WEBSOCKET_URL_SSL: "wss://${DOMAIN_NAME}/rcon-ws/"
-      RWA_WEBSOCKET_URL: "ws://${DOMAIN_NAME}/rcon-ws/"
+      RWA_WEBSOCKET_URL_SSL: "wss://rcon.${DOMAIN_NAME:-localhost}/ws/"
+      RWA_WEBSOCKET_URL: "ws://rcon.${DOMAIN_NAME:-localhost}/ws/"
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
@@ -83,6 +90,10 @@ services:
     depends_on:
       minecraft:
         condition: service_healthy
+    labels:
+      sablier.enable: true
+      sablier.timeout: 60s
+      sablier.mode: stop
     volumes:
       - ./config/bluemap/core.conf:/app/config/core.conf:ro
       - ./data/bluemap/config:/app/config
@@ -93,11 +104,14 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     restart: unless-stopped
-    command: --base-url /admin
     profiles:
       - docker-admin
     security_opt:
       - no-new-privileges:true
+    labels:
+      sablier.enable: true
+      sablier.timeout: 60s
+      sablier.mode: stop
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -112,6 +126,9 @@ services:
     depends_on:
       minecraft:
         condition: service_healthy
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     volumes:
       - ./data/minecraft/world:/minecraft/world
     environment:
@@ -131,6 +148,9 @@ services:
       - /sys:/host/sys:ro
       - /run/udev:/run/udev:ro
       - /:/rootfs:ro
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     command:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
@@ -143,6 +163,9 @@ services:
     privileged: true
     profiles:
       - monitoring
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     volumes: 
       - "/:/rootfs"
       - "/var/run:/var/run"
@@ -151,7 +174,7 @@ services:
       - "/dev/disk/:/dev/disk"
 
   loki:
-    image: grafana/loki:2.9.15
+    image: grafana/loki:3.5
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -159,6 +182,9 @@ services:
     command: -config.file=/etc/loki/config/config.yml
     volumes:
       - ./config/loki/config.yaml:/etc/loki/config/config.yml:ro
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:3100/ready"]
       interval: 30s
@@ -183,6 +209,9 @@ services:
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
       - ./data/prometheus:/prometheus
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:9090/-/ready"]
       interval: 30s
@@ -192,16 +221,19 @@ services:
   promtail:
     image: grafana/promtail:latest
     restart: unless-stopped
-    user: root
-    profiles:
-      - minecraft
-    volumes:
-      - ./config/promtail/config.yaml:/etc/promtail/config.yml:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     command: -config.file=/etc/promtail/config.yml
+    user: root
     depends_on:
       loki:
         condition: service_healthy
+    profiles:
+      - minecraft
+    labels:
+      traefik.enable: false
+      sablier.enable: false
+    volumes:
+      - ./config/promtail/config.yaml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   grafana:
     image: grafana/grafana:12.1.1
@@ -214,12 +246,15 @@ services:
         condition: service_healthy
       loki:
         condition: service_healthy
+    labels:
+      sablier.enable: true
+      sablier.timeout: 60s
+      sablier.mode: stop
     volumes:
       - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yml:ro
       - ./data/grafana:/var/lib/grafana
     environment:
-      GF_SERVE_FROM_SUB_PATH: true
-      GF_SERVER_ROOT_URL: http://${DOMAIN_NAME}/monitoring/
+      GF_SERVER_ROOT_URL: http://monitoring.${DOMAIN_NAME:-localhost}/
 
   traefik:
     image: traefik:v3.5
@@ -229,10 +264,15 @@ services:
     ports:
       - "80:80"
       - "8080:8080"
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     volumes:
       - ./config/traefik/traefik.yaml:/etc/traefik/traefik.yml:ro
       - ./config/traefik/dynamic-config.yaml:/etc/traefik/dynamic-config.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME:-localhost}
 
   sablier:
     image: sablierapp/sablier:1.10.1
@@ -240,5 +280,8 @@ services:
     command: start --provider.name=docker
     profiles:
       - web
+    labels:
+      traefik.enable: false
+      sablier.enable: false
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

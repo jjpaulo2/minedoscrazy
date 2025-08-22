@@ -37,3 +37,7 @@ scrape_configs:
         target_label: project
       - source_labels: ['__meta_docker_container_label_com_docker_compose_container_number']
         target_label: compose_number
+
+      # Compatibilidade entre as labels de serviço
+      - source_labels: [service]
+        target_label: service_name
