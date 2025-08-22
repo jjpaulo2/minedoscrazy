@@ -2,6 +2,7 @@ services:
 
   minecraft:
     image: itzg/minecraft-server:latest
+    container_name: minedoscrazy-minecraft
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -59,6 +60,7 @@ services:
 
   rcon:
     image: itzg/rcon:latest
+    container_name: minedoscrazy-rcon
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -67,6 +69,7 @@ services:
       minecraft:
         condition: service_healthy
     labels:
+      traefik.enable: false
       sablier.enable: true
       sablier.timeout: 60s
       sablier.mode: stop
@@ -83,6 +86,7 @@ services:
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
+    container_name: minedoscrazy-bluemap
     restart: unless-stopped
     command: -r -u -w
     profiles:
@@ -91,6 +95,7 @@ services:
       minecraft:
         condition: service_healthy
     labels:
+      traefik.enable: false
       sablier.enable: true
       sablier.timeout: 60s
       sablier.mode: stop
@@ -103,12 +108,14 @@ services:
   
   portainer:
     image: portainer/portainer-ce:latest
+    container_name: minedoscrazy-portainer
     restart: unless-stopped
     profiles:
       - docker-admin
     security_opt:
       - no-new-privileges:true
     labels:
+      traefik.enable: false
       sablier.enable: true
       sablier.timeout: 60s
       sablier.mode: stop
@@ -119,6 +126,7 @@ services:
 
   minecraft-exporter:
     image: ghcr.io/dirien/minecraft-exporter:latest
+    container_name: minedoscrazy-minecraft-exporter
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -139,6 +147,7 @@ services:
   
   node-exporter:
     image: prom/node-exporter:latest
+    container_name: minedoscrazy-node-exporter
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -159,6 +168,7 @@ services:
   
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
+    container_name: minedoscrazy-cadvisor
     restart: unless-stopped
     privileged: true
     profiles:
@@ -175,6 +185,7 @@ services:
 
   loki:
     image: grafana/loki:3.5
+    container_name: minedoscrazy-loki
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -193,6 +204,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v3.5.0
+    container_name: minedoscrazy-prometheus
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -220,6 +232,7 @@ services:
 
   promtail:
     image: grafana/promtail:latest
+    container_name: minedoscrazy-promtail
     restart: unless-stopped
     command: -config.file=/etc/promtail/config.yml
     user: root
@@ -237,6 +250,7 @@ services:
 
   grafana:
     image: grafana/grafana:12.1.1
+    container_name: minedoscrazy-grafana
     restart: unless-stopped
     user: "${UID:-1000}:${GID:-1000}"
     profiles:
@@ -247,6 +261,7 @@ services:
       loki:
         condition: service_healthy
     labels:
+      traefik.enable: false
       sablier.enable: true
       sablier.timeout: 60s
       sablier.mode: stop
@@ -258,12 +273,12 @@ services:
 
   traefik:
     image: traefik:v3.5
+    container_name: minedoscrazy-traefik
     restart: unless-stopped
     profiles:
       - web
     ports:
       - "80:80"
-      - "8080:8080"
     labels:
       traefik.enable: false
       sablier.enable: false
@@ -273,9 +288,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME:-localhost}
+      DOMAIN_ADMIN_EMAIL: ${DOMAIN_ADMIN_EMAIL:-admin@localhost}
 
   sablier:
     image: sablierapp/sablier:1.10.1
+    container_name: minedoscrazy-sablier
     restart: unless-stopped
     command: start --provider.name=docker
     profiles:

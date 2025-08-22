@@ -27,6 +27,14 @@ metrics:
     addEntryPointsLabels: true
     addServicesLabels: true
 
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "${DOMAIN_ADMIN_EMAIL}"
+      storage: acme.json
+      httpChallenge:
+        entryPoint: web
+
 logs:
   general:
     level: DEBUG

@@ -36,7 +36,7 @@ http:
         sablier:
           sablierUrl: http://sablier:10000
           sessionDuration: 1m
-          names: minedoscrazy-bluemap-1
+          names: minedoscrazy-bluemap
           dynamic:
             displayName: Bluemap
             refreshFrequency: 15s
@@ -48,7 +48,7 @@ http:
         sablier:
           sablierUrl: http://sablier:10000
           sessionDuration: 1m
-          names: minedoscrazy-grafana-1
+          names: minedoscrazy-grafana
           dynamic:
             displayName: Grafana
             refreshFrequency: 15s
@@ -60,7 +60,7 @@ http:
         sablier:
           sablierUrl: http://sablier:10000
           sessionDuration: 1m
-          names: minedoscrazy-portainer-1
+          names: minedoscrazy-portainer
           dynamic:
             displayName: Portainer
             refreshFrequency: 15s
@@ -72,7 +72,7 @@ http:
         sablier:
           sablierUrl: http://sablier:10000
           sessionDuration: 1m
-          names: minedoscrazy-rcon-1
+          names: minedoscrazy-rcon
           dynamic:
             displayName: RCON Web Admin
             refreshFrequency: 15s
