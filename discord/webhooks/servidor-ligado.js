@@ -13,7 +13,7 @@ fetch(
             "embeds": [
                 {
                     "title": "Servidor ligado!",
-                    "description": `Acesse [${DOMAIN_NAME}/map](https://${DOMAIN_NAME}/map/) para ver o mapa do mundo.`,
+                    "description": `Acesse [map.${DOMAIN_NAME}](https://map.${DOMAIN_NAME}) para ver o mapa do mundo.`,
                     "color": 5763719,
                     "fields": [
                         {
