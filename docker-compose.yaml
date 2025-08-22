@@ -286,8 +286,6 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --entrypoints.metrics.address=:8082
-      - --providers.docker=true
-      - --providers.file.filename=/etc/traefik/dynamic-config.yml
       - --experimental.plugins.sablier.moduleName=github.com/sablierapp/sablier
       - --experimental.plugins.sablier.version=v1.10.1
       - --metrics.prometheus.entryPoint=metrics
@@ -297,6 +295,8 @@ services:
       - --certificatesresolvers.letsencrypt.acme.storage=acme.json
       - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
       - --log.level=INFO
+      - --providers.docker=true
+      - --providers.file.filename=/etc/traefik/dynamic-config.yml
     labels:
       traefik.enable: false
       sablier.enable: false
