@@ -30,7 +30,7 @@ metrics:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: "${DOMAIN_ADMIN_EMAIL}"
+      email: "{{ env 'DOMAIN_ADMIN_EMAIL' }}"
       storage: acme.json
       httpChallenge:
         entryPoint: web
