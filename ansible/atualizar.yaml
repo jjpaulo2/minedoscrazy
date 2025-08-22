@@ -12,6 +12,10 @@
       prompt: "Nome do domínio do servidor"
       private: yes
 
+    - name: "domain_admin_email"
+      prompt: "Email do administrador do domínio"
+      private: yes
+
     - name: "rcon_admin_username"
       prompt: "Nome de usuário do administrador RCON"
       private: yes
@@ -39,5 +43,6 @@
         chdir: "{{ app_dir }}"
       environment:
         DOMAIN_NAME: "{{ domain_name }}"
+        DOMAIN_ADMIN_EMAIL: "{{ domain_admin_email }}"
         RCON_ADMIN_USERNAME: "{{ rcon_admin_username }}"
         RCON_ADMIN_PASSWORD: "{{ rcon_admin_password }}"
