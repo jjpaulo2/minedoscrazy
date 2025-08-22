@@ -279,6 +279,7 @@ services:
       - web
     ports:
       - "80:80"
+      - "443:443"
     labels:
       traefik.enable: false
       sablier.enable: false
