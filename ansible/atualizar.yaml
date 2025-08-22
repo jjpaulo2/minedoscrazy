@@ -30,6 +30,15 @@
       args:
         chdir: "{{ app_dir }}"
 
+    - name: Garantir permissões do diretório de configuração
+      become: true
+      ansible.builtin.file:
+        path: "{{ app_dir }}/config"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        recurse: true
+        state: directory
+
     - name: Atualizar repositório com git pull
       ansible.builtin.git:
         repo: "{{ repo_url }}"

@@ -289,7 +289,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME:-localhost}
-      DOMAIN_ADMIN_EMAIL: ${DOMAIN_ADMIN_EMAIL:-admin@localhost}
+      TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT: true
+      TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_HTTPCHALLENGE_ENTRYPOINT: web
+      TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL: ${DOMAIN_ADMIN_EMAIL:-admin@localhost}
 
   sablier:
     image: sablierapp/sablier:1.10.1
