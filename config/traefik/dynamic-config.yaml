@@ -18,18 +18,6 @@ http:
         servers:
           - url: "http://grafana:3000"
 
-    rcon:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: "http://rcon:4326"
-
-    rcon-ws:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: "http://rcon:4327"
-
   middlewares:
     bluemap-dynamic:
       plugin:
@@ -66,23 +54,6 @@ http:
             refreshFrequency: 15s
             showDetails: true
             theme: ghost
-    
-    rcon-dynamic:
-      plugin:
-        sablier:
-          sablierUrl: http://sablier:10000
-          sessionDuration: 1m
-          names: minedoscrazy-rcon
-          dynamic:
-            displayName: RCON Web Admin
-            refreshFrequency: 15s
-            showDetails: true
-            theme: ghost
-    
-    route-strip:
-      stripPrefix:
-        prefixes:
-          - "/ws/"
 
   routers:
     map:
@@ -106,21 +77,5 @@ http:
       entryPoints: ["web", "websecure"]
       middlewares: ["grafana-dynamic@file"]
       service: "grafana"
-      tls:
-        certResolver: letsencrypt
-
-    rcon:
-      rule: Host(`rcon.{{ env "DOMAIN_NAME" }}`)
-      entryPoints: ["web", "websecure"]
-      middlewares: ["rcon-dynamic@file"]
-      service: "rcon"
-      tls:
-        certResolver: letsencrypt
-
-    rcon-ws:
-      rule: Host(`rcon.{{ env "DOMAIN_NAME" }}`) && PathPrefix(`/ws/`)
-      entryPoints: ["web", "websecure"]
-      middlewares: ["rcon-dynamic@file", "route-strip@file"]
-      service: "rcon-ws"
       tls:
         certResolver: letsencrypt

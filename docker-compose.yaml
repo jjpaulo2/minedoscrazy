@@ -9,6 +9,7 @@ services:
       - minecraft
     ports:
       - "25565:25565"
+      - "25575:25575"
     labels:
       traefik.enable: false
       sablier.enable: false
@@ -57,32 +58,6 @@ services:
         cloth-config
         balm
         inventory-management
-
-  rcon:
-    image: itzg/rcon:latest
-    container_name: minedoscrazy-rcon
-    restart: unless-stopped
-    user: "${UID:-1000}:${GID:-1000}"
-    profiles:
-      - minecraft-admin
-    depends_on:
-      minecraft:
-        condition: service_healthy
-    labels:
-      traefik.enable: false
-      sablier.enable: true
-      sablier.timeout: 60s
-      sablier.mode: stop
-    volumes:
-      - ./data/rcon:/opt/rcon-web-admin/db
-    environment:
-      RWA_USERNAME: ${RCON_ADMIN_USER:-admin}
-      RWA_PASSWORD: ${RCON_ADMIN_PASSWORD:-admin}
-      RWA_ADMIN: "TRUE"
-      RWA_RCON_HOST: minecraft
-      RWA_RCON_PASSWORD: "minedoscrazy"
-      RWA_WEBSOCKET_URL_SSL: "wss://rcon.${DOMAIN_NAME:-localhost}/ws/"
-      RWA_WEBSOCKET_URL: "ws://rcon.${DOMAIN_NAME:-localhost}/ws/"
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
