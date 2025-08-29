@@ -105,7 +105,7 @@ ping-passthrough-interval: 3
 forward-player-ping: false
 
 # Maximum amount of players that can connect. This is only visual at this time and does not actually limit player count.
-max-players: 100
+max-players: 12
 
 # If debug messages should be sent through console
 debug-mode: false
