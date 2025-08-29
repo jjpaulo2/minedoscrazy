@@ -121,7 +121,7 @@ services:
     environment:
       WEB_DISABLED_EXPORTER_METRICS: true
       MC_RCON_ADDRESS: minecraft:25575
-      MC_RCON_PASSWORD: minedoscrazy
+      MC_RCON_PASSWORD: ${RCON_PASSWORD:-minedoscrazy}
       MC_NAME_SOURCE: offline
   
   node-exporter:
