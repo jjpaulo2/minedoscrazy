@@ -10,10 +10,12 @@ services:
     ports:
       - "25565:25565"
       - "25575:25575"
+      - "19132:19132"
     labels:
       traefik.enable: false
       sablier.enable: false
     volumes:
+      - ./config/minecraft/geyser.yaml:/data/plugins/Geyser-Spigot/config.yml:ro
       - ./data/minecraft:/data
     environment:
       EULA: TRUE
@@ -42,7 +44,7 @@ services:
 
       ENABLE_RCON: true
       RCON_PORT: 25575
-      RCON_PASSWORD: "minedoscrazy"
+      RCON_PASSWORD: ${RCON_PASSWORD:-minedoscrazy}
 
       MEMORY: 8G
       MAX_MEMORY: 12G
@@ -58,6 +60,8 @@ services:
         cloth-config
         balm
         inventory-management
+        geyser
+        floodgate
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
