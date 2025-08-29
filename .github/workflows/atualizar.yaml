@@ -40,7 +40,6 @@ jobs:
           options: |
             --extra-vars domain_name=${{ secrets.SERVER_ADDRESS }}
             --extra-vars domain_admin_email=${{ secrets.DOMAIN_ADMIN_EMAIL }}
-            --extra-vars rcon_admin_username=${{ secrets.RCON_ADMIN_USERNAME }}
             --extra-vars rcon_admin_password=${{ secrets.RCON_ADMIN_PASSWORD }}
 
   discord:

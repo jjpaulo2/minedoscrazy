@@ -16,10 +16,6 @@
       prompt: "Email do administrador do domínio"
       private: yes
 
-    - name: "rcon_admin_username"
-      prompt: "Nome de usuário do administrador RCON"
-      private: yes
-
     - name: "rcon_admin_password"
       prompt: "Senha do administrador RCON"
       private: yes
@@ -53,5 +49,4 @@
       environment:
         DOMAIN_NAME: "{{ domain_name }}"
         DOMAIN_ADMIN_EMAIL: "{{ domain_admin_email }}"
-        RCON_ADMIN_USERNAME: "{{ rcon_admin_username }}"
-        RCON_ADMIN_PASSWORD: "{{ rcon_admin_password }}"
+        RCON_PASSWORD: "{{ rcon_admin_password }}"
