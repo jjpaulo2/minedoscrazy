@@ -1,6 +1,6 @@
 # Mine dos Crazy
 
-[![Ligar Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/ligar.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/ligar.yaml) [![Desligar Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/desligar.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/desligar.yaml) [![Backup do Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/backup.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/backup.yaml)
+[![Backup do Servidor](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/backup.yaml/badge.svg)](https://github.com/jjpaulo2/minedoscrazy/actions/workflows/backup.yaml)
 
 ⛏️ Configuração do servidor de Minecraft dos "Eternos Pratas".
 
