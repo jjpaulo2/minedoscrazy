@@ -40,26 +40,20 @@ services:
       ANNOUNCE_PLAYER_ACHIEVEMENTS: true
       ALLOW_FLIGHT: false
       VIEW_DISTANCE: 12
-      SIMULATION_DISTANCE: 4
+      SIMULATION_DISTANCE: 12
 
       ENABLE_RCON: true
       RCON_PORT: 25575
       RCON_PASSWORD: ${RCON_PASSWORD:-minedoscrazy}
 
       MEMORY: 8G
-      MAX_MEMORY: 12G
+      MAX_MEMORY: 20G
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
 
-      TYPE: FABRIC
-      FABRIC_FORCE_REINSTALL: true
+      TYPE: PAPER
       MODRINTH_ALLOWED_VERSION_TYPE: beta
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
-        fabric-api
-        lithium
-        cloth-config
-        balm
-        inventory-management
         geyser
         floodgate
 
