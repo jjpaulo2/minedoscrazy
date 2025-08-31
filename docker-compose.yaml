@@ -60,7 +60,6 @@ services:
         cloth-config
         balm
         inventory-management
-        viafabric
         geyser
         floodgate
 
