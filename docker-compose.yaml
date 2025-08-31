@@ -55,7 +55,6 @@ services:
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         geyser
-        floodgate
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
