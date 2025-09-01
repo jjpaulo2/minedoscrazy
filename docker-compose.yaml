@@ -61,7 +61,6 @@ services:
         balm
         inventory-management
         geyser
-        floodgate
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
@@ -265,7 +264,7 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.asDefault=true
-      - --entrypoints.websecure.http.tls.certresolver=letsencrypt 
+      - --entrypoints.websecure.http.tls.certresolver=letsencrypt
       - --entrypoints.metrics.address=:8082
       - --experimental.plugins.sablier.moduleName=github.com/sablierapp/sablier
       - --experimental.plugins.sablier.version=v1.10.1
