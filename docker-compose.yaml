@@ -59,6 +59,7 @@ services:
         balm
         inventory-management
         safeserver
+        vanilla-permissions
         luckperms
 
   bluemap:
