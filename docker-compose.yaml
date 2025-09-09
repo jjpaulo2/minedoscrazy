@@ -9,13 +9,10 @@ services:
       - minecraft
     ports:
       - "25565:25565"
-      - "25575:25575"
-      - "19132:19132/udp"
     labels:
       traefik.enable: false
       sablier.enable: false
     volumes:
-      - ./config/minecraft/geyser.yaml:/data/config/Geyser-Fabric/config.yml:ro
       - ./data/minecraft:/data
     environment:
       EULA: TRUE
@@ -60,7 +57,7 @@ services:
         cloth-config
         balm
         inventory-management
-        geyser
+        safeserver
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
