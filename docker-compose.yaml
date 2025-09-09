@@ -25,7 +25,6 @@ services:
       ONLINE_MODE: false
       MAX_PLAYERS: 12
       ENABLE_COMMAND_BLOCK: false
-      ENABLE_WHITELIST: true
       DIFFICULTY: normal
       PVP: true
       MODE: survival
