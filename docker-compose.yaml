@@ -57,7 +57,7 @@ services:
         cloth-config
         balm
         inventory-management
-        safeserver
+        easyauth
         vanilla-permissions
         luckperms
 
