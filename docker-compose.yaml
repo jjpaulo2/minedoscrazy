@@ -14,7 +14,6 @@ services:
       sablier.enable: false
     volumes:
       - ./data/minecraft:/data
-      - ./config/minecraft/easyauth.conf:/data/config/EasyAuth/main.conf:ro
     environment:
       EULA: TRUE
 

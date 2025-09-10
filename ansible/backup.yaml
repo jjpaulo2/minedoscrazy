@@ -30,7 +30,8 @@
             - "{{ app_dir }}/data/minecraft/usercache.json"
             - "{{ app_dir }}/data/minecraft/whitelist.json"
             - "{{ app_dir }}/data/minecraft/world"
-            - "{{ app_dir }}/data/minecraft/config"
+            - "{{ app_dir }}/data/minecraft/EasyAuth"
+            - "{{ app_dir }}/data/minecraft/mods/luckperms/luckperms-h2-v2.mv.db"
           dest: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
           format: zip
           remove: no
