@@ -23,7 +23,14 @@
       - name: Criar zip do conteúdo da pasta
         become: true
         ansible.builtin.archive:
-          path: "{{ app_dir }}/data/minecraft/world"
+          path:
+            - "{{ app_dir }}/data/minecraft/banned-ips.json"
+            - "{{ app_dir }}/data/minecraft/banned-players.json"
+            - "{{ app_dir }}/data/minecraft/ops.json"
+            - "{{ app_dir }}/data/minecraft/usercache.json"
+            - "{{ app_dir }}/data/minecraft/whitelist.json"
+            - "{{ app_dir }}/data/minecraft/world"
+            - "{{ app_dir }}/data/minecraft/config"
           dest: "{{ app_dir }}/data-{{ timestamp.stdout }}.zip"
           format: zip
           remove: no
