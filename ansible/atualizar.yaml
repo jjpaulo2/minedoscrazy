@@ -42,7 +42,7 @@
         update: true
         force: true
 
-    - name: Preparar os arquivos do server
+    - name: Preparar os arquivos do servidor
       become: true
       ansible.builtin.shell: make files
       args:
