@@ -19,12 +19,12 @@ directories:
 	@mkdir -p data/grafana
 
 .PHONY: files
-files: directories
+files: clean directories
 	@sudo chown -R $(UID):$(GID) data/
 	@sudo chown -R $(UID):$(GID) config/
 
 stop-server:
 	@docker compose --profile '*' down
 
-serve: clean files
+serve:
 	@docker compose --profile '*' up -d --force-recreate --remove-orphans

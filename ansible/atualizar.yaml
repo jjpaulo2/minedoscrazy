@@ -42,6 +42,10 @@
         update: true
         force: true
 
+    - name: Preparar os arquivos do server
+      become: true
+      ansible.builtin.shell: make files
+
     - name: Subir os containers com Docker Compose
       ansible.builtin.shell: make serve
       args:
