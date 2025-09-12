@@ -36,6 +36,7 @@ services:
       ALLOW_NETHER: true
       ANNOUNCE_PLAYER_ACHIEVEMENTS: true
       ALLOW_FLIGHT: false
+      ENABLE_WHITELIST: true
       VIEW_DISTANCE: 12
       SIMULATION_DISTANCE: 12
 
@@ -60,6 +61,13 @@ services:
         easywhitelist
         vanilla-permissions
         luckperms
+
+      RCON_CMDS_STARTUP: |
+        lp creategroup admin
+        lp group admin permission set minecraft.command.ban-ip true
+        lp group admin permission set minecraft.command.pardon-ip true
+        lp group admin permission set minecraft.command.kick true
+        lp group admin permission set easywhitelist.* true
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
