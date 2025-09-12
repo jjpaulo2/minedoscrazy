@@ -69,7 +69,6 @@ services:
         lp group default permission set easyauth.* false
         lp group default permission set easyauth.commands.login true
         lp creategroup admin
-        lp group admin permission set luckperms.* true
         lp group admin permission set minecraft.command.ban-ip true
         lp group admin permission set minecraft.command.pardon-ip true
         lp group admin permission set minecraft.command.kick true
