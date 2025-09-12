@@ -45,6 +45,8 @@
     - name: Preparar os arquivos do server
       become: true
       ansible.builtin.shell: make files
+      args:
+        chdir: "{{ app_dir }}"
 
     - name: Subir os containers com Docker Compose
       ansible.builtin.shell: make serve
