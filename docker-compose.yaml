@@ -14,7 +14,6 @@ services:
       sablier.enable: false
     volumes:
       - ./data/minecraft:/data
-      - ./config/minecraft/styled-chat.json:/data/config/styled-chat.json
     environment:
       EULA: TRUE
 
@@ -61,7 +60,6 @@ services:
         easywhitelist
         vanilla-permissions
         luckperms
-        styled-chat
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
