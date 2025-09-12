@@ -4,12 +4,9 @@
   "text_formatting": {
     "legacy_formatting": true,
     "parse_links": true,
+    "parse_mentions": false,
     "markdown": true,
-    "formatting_from_other_mods": true
-  },
-  "chat_preview": {
-    "send_full_message": false,
-    "require_for_formatting": false
+    "respect_colors_client_setting": true
   },
   "auto_completion": {
     "tags": false,
@@ -80,7 +77,8 @@
       "shears": "✂",
       "fire": "🔥",
       "table": "<rb>(╯°□°）╯︵ ┻━┻"
-    }
+    },
+    "custom_message_types": {}
   },
   "styles": [
     {
@@ -95,7 +93,8 @@
         "base_death": ""
       },
       "formatting": {},
-      "emoticons": {}
+      "emoticons": {},
+      "custom_message_types": {}
     },
     {
       "require": {
@@ -105,7 +104,8 @@
       "display_name": "<dark_gray>[<aqua>Player</aqua>]</dark_gray> <dark_aqua>${vanillaDisplayName}</dark_aqua>",
       "message_formats": {},
       "formatting": {},
-      "emoticons": {}
+      "emoticons": {},
+      "custom_message_types": {}
     },
     {
       "require": {
@@ -117,7 +117,8 @@
       "formatting": {},
       "emoticons": {
         "potato": "<rb>Potato"
-      }
+      },
+      "custom_message_types": {}
     }
   ]
 }

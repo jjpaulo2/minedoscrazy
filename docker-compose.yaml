@@ -14,10 +14,7 @@ services:
       sablier.enable: false
     volumes:
       - ./data/minecraft:/data
-      - ./data/minecraft/styled-chat.json:/data/config/styled-chat.json
-      - ./data/minecraft/easyauth/main.conf:/data/config/EasyAuth/main.conf
-      - ./data/minecraft/easyauth/extended.conf:/data/config/EasyAuth/extended.conf
-      - ./data/minecraft/easyauth/storage.conf:/data/config/EasyAuth/storage.conf
+      - ./config/minecraft/styled-chat.json:/data/config/styled-chat.json
     environment:
       EULA: TRUE
 
@@ -50,6 +47,7 @@ services:
       MEMORY: 8G
       MAX_MEMORY: 20G
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
+      TZ: America/Sao_Paulo
 
       TYPE: FABRIC
       FABRIC_FORCE_REINSTALL: true

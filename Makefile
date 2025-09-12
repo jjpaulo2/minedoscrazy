@@ -12,9 +12,9 @@ clean:
 .PHONY: directories
 directories:
 	@mkdir -p data/minecraft
-	@mkdir -p data/rcon
 	@mkdir -p data/bluemap
 	@mkdir -p data/portainer
+	@mkdir -p data/loki
 	@mkdir -p data/prometheus
 	@mkdir -p data/grafana
 
