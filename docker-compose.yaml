@@ -14,6 +14,10 @@ services:
       sablier.enable: false
     volumes:
       - ./data/minecraft:/data
+      - ./data/minecraft/styled-chat.json:/data/config/styled-chat.json
+      - ./data/minecraft/easyauth/main.conf:/data/config/EasyAuth/main.conf
+      - ./data/minecraft/easyauth/extended.conf:/data/config/EasyAuth/extended.conf
+      - ./data/minecraft/easyauth/storage.conf:/data/config/EasyAuth/storage.conf
     environment:
       EULA: TRUE
 
@@ -54,12 +58,11 @@ services:
       MODRINTH_PROJECTS: |
         fabric-api
         lithium
-        cloth-config
-        balm
         inventory-management
         easyauth
         vanilla-permissions
         luckperms
+        styled-chat
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
@@ -170,6 +173,7 @@ services:
     command: -config.file=/etc/loki/config/config.yml
     volumes:
       - ./config/loki/config.yaml:/etc/loki/config/config.yml:ro
+      - ./data/loki:/loki
     labels:
       traefik.enable: false
       sablier.enable: false
@@ -194,7 +198,7 @@ services:
     command:
       - "--web.enable-remote-write-receiver"
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.retention.time=7d"
+      - "--storage.tsdb.retention.time=30d"
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
       - ./data/prometheus:/prometheus
