@@ -58,6 +58,7 @@ services:
         lithium
         inventory-management
         easyauth
+        easywhitelist
         vanilla-permissions
         luckperms
         styled-chat
