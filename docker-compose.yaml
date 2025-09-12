@@ -61,7 +61,6 @@ services:
         vanilla-permissions
         luckperms
         styled-chat
-        ledger
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
