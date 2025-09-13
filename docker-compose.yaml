@@ -51,7 +51,7 @@ services:
 
       TYPE: FABRIC
       FABRIC_FORCE_REINSTALL: true
-      MODRINTH_ALLOWED_VERSION_TYPE: beta
+      MODRINTH_ALLOWED_VERSION_TYPE: release
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         fabric-api
@@ -62,21 +62,21 @@ services:
         vanilla-permissions
         luckperms
 
-      RCON_CMDS_STARTUP: |
-        lp group default permission set luckperms.* false
-        lp group default permission set minecraft.* false
-        lp group default permission set easywhitelist.* false
-        lp group default permission set easyauth.* false
-        lp group default permission set easyauth.commands.login true
-        lp creategroup admin
-        lp group admin permission set minecraft.command.ban-ip true
-        lp group admin permission set minecraft.command.pardon-ip true
-        lp group admin permission set minecraft.command.kick true
-        lp group admin permission set easyauth.commands.auth true
-        lp group admin permission set easyauth.commands.logout true
-        lp group admin permission set easywhitelist.commands.easyban true
-        lp group admin permission set easywhitelist.commands.easypardon true
-        lp group admin permission set easywhitelist.commands.easywhitelist true
+      # RCON_CMDS_STARTUP: |
+      #   lp group default permission set luckperms.* false
+      #   lp group default permission set minecraft.* false
+      #   lp group default permission set easywhitelist.* false
+      #   lp group default permission set easyauth.* false
+      #   lp group default permission set easyauth.commands.login true
+      #   lp creategroup admin
+      #   lp group admin permission set minecraft.command.ban-ip true
+      #   lp group admin permission set minecraft.command.pardon-ip true
+      #   lp group admin permission set minecraft.command.kick true
+      #   lp group admin permission set easyauth.commands.auth true
+      #   lp group admin permission set easyauth.commands.logout true
+      #   lp group admin permission set easywhitelist.commands.easyban true
+      #   lp group admin permission set easywhitelist.commands.easypardon true
+      #   lp group admin permission set easywhitelist.commands.easywhitelist true
 
   bluemap:
     image: ghcr.io/bluemap-minecraft/bluemap:latest
