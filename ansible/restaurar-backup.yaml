@@ -16,6 +16,18 @@
       prompt: "Nome do arquivo de backup que você deseja restaurar"
       private: false
 
+    - name: "domain_name"
+      prompt: "Nome do domínio do servidor"
+      private: true
+
+    - name: "domain_admin_email"
+      prompt: "Email do administrador do domínio"
+      private: true
+
+    - name: "rcon_admin_password"
+      prompt: "Senha do administrador RCON"
+      private: true
+
   tasks:    
     - name: Derrubar o Docker Compose
       ansible.builtin.shell: make stop-server
@@ -50,13 +62,13 @@
         ansible.builtin.command: "sudo chown -R 1000:1000 {{ app_dir }}/data/minecraft/world"
 
       - name: Subir os containers com Docker Compose
-        ansible.builtin.shell: make serve-ssl
+        ansible.builtin.shell: make serve
         args:
           chdir: "{{ app_dir }}"
         environment:
           DOMAIN_NAME: "{{ domain_name }}"
-          RCON_ADMIN_USERNAME: "{{ rcon_admin_username }}"
-          RCON_ADMIN_PASSWORD: "{{ rcon_admin_password }}"
+          DOMAIN_ADMIN_EMAIL: "{{ domain_admin_email }}"
+          RCON_PASSWORD: "{{ rcon_admin_password }}"
           
       always:
         - name: Remover arquivo do backup
