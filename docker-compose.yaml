@@ -38,7 +38,7 @@ services:
       ALLOW_FLIGHT: false
       ENABLE_WHITELIST: true
       VIEW_DISTANCE: 12
-      SIMULATION_DISTANCE: 12
+      SIMULATION_DISTANCE: 10
 
       ENABLE_RCON: true
       RCON_PORT: 25575
@@ -56,6 +56,11 @@ services:
       MODRINTH_PROJECTS: |
         fabric-api
         lithium
+        c2me-fabric
+        scalablelux
+        ferrite-core
+        packet-fixer
+        debugify
         inventory-management
         easyauth
         easywhitelist
