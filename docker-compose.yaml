@@ -61,6 +61,7 @@ services:
         ferrite-core
         packet-fixer
         debugify
+        disconnect-packet-fix
         inventory-management
         easyauth
         easywhitelist
