@@ -18,8 +18,12 @@ directories:
 	@mkdir -p data/prometheus
 	@mkdir -p data/grafana
 
+.PHONY: downloads
+downloads:
+	@curl -L -o data/minecraft/mods/easyauth-mc1.21.9-3.4.0-SNAPSHOT.jar https://github.com/NikitaCartes/EasyAuth/releases/download/3.4.0-SNAPSHOT.1/easyauth-mc1.21.9-3.4.0-SNAPSHOT.jar
+
 .PHONY: files
-files: clean directories
+files: clean directories downloads
 	@sudo chown -R $(UID):$(GID) data/
 	@sudo chown -R $(UID):$(GID) config/
 
@@ -28,3 +32,6 @@ stop-server:
 
 serve:
 	@docker compose --profile '*' up -d --force-recreate --remove-orphans
+
+serve-only-minecraft:
+	@docker compose --profile minecraft up --force-recreate --remove-orphans

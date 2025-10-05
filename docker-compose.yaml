@@ -21,7 +21,7 @@ services:
       MOTD: "Owwwwwwwww §aStoneMask§r..."
       ICON: https://i.scdn.co/image/ab67616d0000b27332ff042034155f8757459ddb
 
-      VERSION: 1.21.8
+      VERSION: 1.21.9
       ONLINE_MODE: false
       MAX_PLAYERS: 12
       ENABLE_COMMAND_BLOCK: false
@@ -51,7 +51,7 @@ services:
 
       TYPE: FABRIC
       FABRIC_FORCE_REINSTALL: true
-      MODRINTH_ALLOWED_VERSION_TYPE: release
+      MODRINTH_ALLOWED_VERSION_TYPE: alpha
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
       MODRINTH_PROJECTS: |
         fabric-api
@@ -60,10 +60,7 @@ services:
         scalablelux
         ferrite-core
         packet-fixer
-        debugify
-        disconnect-packet-fix
         inventory-management
-        easyauth
         easywhitelist
         vanilla-permissions
         luckperms
@@ -241,7 +238,7 @@ services:
       loki:
         condition: service_healthy
     profiles:
-      - minecraft
+      - monitoring
     labels:
       traefik.enable: false
       sablier.enable: false
