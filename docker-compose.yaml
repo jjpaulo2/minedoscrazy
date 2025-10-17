@@ -44,7 +44,7 @@ services:
       RCON_PORT: 25575
       RCON_PASSWORD: ${RCON_PASSWORD:-minedoscrazy}
 
-      MEMORY: 8G
+      MEMORY: 6G
       MAX_MEMORY: 20G
       JVM_XX_OPTS: "-XX:+UseG1GC -XX:ParallelGCThreads=8 -XX:MaxGCPauseMillis=200"
       TZ: America/Sao_Paulo
@@ -64,6 +64,7 @@ services:
         alternate-current
         krypton
         inventory-management
+        easyauth
         easywhitelist
         vanilla-permissions
         luckperms
