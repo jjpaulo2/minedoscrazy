@@ -60,6 +60,7 @@ services:
         scalablelux
         ferrite-core
         packet-fixer
+        disconnect-packet-fix
         vmp-fabric
         alternate-current
         krypton
