@@ -53,6 +53,9 @@ services:
       FABRIC_FORCE_REINSTALL: true
       MODRINTH_ALLOWED_VERSION_TYPE: alpha
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
+      # MODRINTH_PROJECTS: |
+      #   krypton
+      #   inventory-management
       MODRINTH_PROJECTS: |
         fabric-api
         lithium
@@ -63,8 +66,6 @@ services:
         disconnect-packet-fix
         vmp-fabric
         alternate-current
-        krypton
-        inventory-management
         easyauth
         easywhitelist
         vanilla-permissions
