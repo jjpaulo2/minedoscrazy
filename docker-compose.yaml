@@ -53,6 +53,8 @@ services:
       FABRIC_FORCE_REINSTALL: true
       MODRINTH_ALLOWED_VERSION_TYPE: alpha
       MODRINTH_DOWNLOAD_DEPENDENCIES: required
+      # MODRINTH_PROJECTS: |
+      #   vanilla-permissions
       MODRINTH_PROJECTS: |
         fabric-api
         lithium
@@ -67,7 +69,6 @@ services:
         alternate-current
         easyauth
         easywhitelist
-        vanilla-permissions
         luckperms
 
       # RCON_CMDS_STARTUP: |
