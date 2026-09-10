@@ -28,7 +28,7 @@ services:
       MOTD: "Owwwwwwwww §aStoneMask§r..."
       ICON: https://i.scdn.co/image/ab67616d0000b27332ff042034155f8757459ddb
 
-      VERSION: 26.1
+      VERSION: 26.2
       ONLINE_MODE: false
       MAX_PLAYERS: 12
       ENABLE_COMMAND_BLOCK: false
