@@ -22,7 +22,7 @@ services:
         inventory-management
         immediatelyfast
         ferrite-core
-        entity-culling
+        entityculling
 
     command: bash scripts/download-mods.sh
 
